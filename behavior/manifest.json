@@ -1,0 +1,49 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "人狼アドオンver.0.0.2",
+    "description": "人狼をするためのアドオン",
+    "version": [1, 0, 1],
+    "min_engine_version": [1, 19, 51],
+    "uuid": "fab37bdb-b3ce-42b0-8105-1c8557d3dc8b"
+  },
+  "modules": [
+    {
+      "type": "data",
+      "description": "behavior_module",
+      "version": [1, 0, 0],
+      "uuid": "52e04748-1539-4897-a3a7-c71b63f95d7a"
+    },
+    {
+      "description": "gametest module",
+      "type":"script",
+      "language": "javascript",
+      "uuid":"418df424-8474-4383-8283-87be89690b63",
+      "version":[
+        0,
+        0,
+        1
+      ],
+      "entry":"scripts/index.js"
+    }
+  ],
+  "dependencies":[
+    {
+      "uuid": "4c8f67a0-4ed0-42bd-a396-7b4c924e2df2",
+      "version": [1, 0, 0]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.1.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.0.0-beta"
+    }
+  ],
+  "metadata": {
+    "authors": ["altivelis"],
+    "url": "https://twitter.com/altivelis1026?s=20&t=cXOW73Tvug2xUX4xijCrCw",
+    "license": "名前さえ記述してくれれば改造、改変OK"
+  }
+}

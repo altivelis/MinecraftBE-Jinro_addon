@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "人狼アドオン[R] ver.0.0.1",
+    "description": "人狼アドオン用のリソースパック",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 19, 51],
+    "uuid": "4c8f67a0-4ed0-42bd-a396-7b4c924e2df2"
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "description": "リソースモジュール",
+      "version": [1, 0, 0],
+      "uuid": "4ed277b3-1963-4fea-86d1-f1fec1dbe3ff"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "fab37bdb-b3ce-42b0-8105-1c8557d3dc8b",
+      "version": [1, 0, 1]
+    }
+  ],
+  "metadata": {
+    "authors": ["altivelis"],
+    "url": "https://twitter.com/altivelis1026?s=20&t=cXOW73Tvug2xUX4xijCrCw",
+    "license": "名前さえ記述してくれれば改造、改変OK"
+  }
+}
