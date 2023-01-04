@@ -1,0 +1,19 @@
+{
+    "format_version": "1.19.50",
+    "minecraft:item": {
+      "description": {
+        "identifier": "altivelis:console",
+        "category":"Items"
+      },
+      "components": {
+        "minecraft:display_name":{
+          "value":"§d管理者"
+        },
+        "minecraft:icon":{
+          "texture":"end_crystal"
+        },
+        "minecraft:foil":true,
+        "minecraft:max_stack_size":1
+      }
+    }
+  }

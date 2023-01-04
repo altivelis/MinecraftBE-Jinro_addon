@@ -39,6 +39,44 @@
                         "deals_damage":false
                     }
                 ]
+            },
+            "minecraft:interact":{
+                "interactions":[
+                    {
+                        "on_interact":{
+                            "filters":{
+                                "all_of":[
+                                    {
+                                        "test":"has_equipment",
+                                        "operator":"!=",
+                                        "domain":"hand",
+                                        "subject":"other",
+                                        "value":"altivelis:ohuda"
+                                    },
+                                    {
+                                        "test":"has_tag",
+                                        "operator":"!=",
+                                        "subject":"other",
+                                        "value":"spec"
+                                    }
+                                ]
+                            },
+                            "event":"found"
+                        }
+                    },
+                    {
+                        "on_interact":{
+                            "filters":{
+                                "test":"has_equipment",
+                                "domain":"hand",
+                                "subject":"other",
+                                "value":"altivelis:ohuda"
+                            },
+                            "event":"medium"
+                        },
+                        "use_item":true
+                    }
+                ]
             }
         },
         "events":{
@@ -58,6 +96,50 @@
                     ],
                     "target":"self"
                 }
+            },
+            "found":{
+                "sequence":[
+                    {
+                        "run_command":{
+                            "command":[
+                                "tag @s[tag=!found] add first",
+                                "tag @s add found"
+                            ],
+                            "target":"self"
+                        }
+                    },
+                    {
+                        "run_command":{
+                            "command":[
+                                "execute if entity @e[type=altivelis:dead_body,tag=first] run tellraw @a {\"rawtext\":[{\"text\":\"§c\"},{\"selector\":\"@e[type=altivelis:dead_body,tag=first]\"},{\"text\":\"§3の遺体を§b\"},{\"selector\":\"@s\"},{\"text\":\"§3が発見した\"}]}",
+                                "tag @e remove first"
+                            ],
+                            "target":"other"
+                        }
+                    }
+                ]
+            },
+            "medium":{
+                "sequence":[
+                    {
+                        "run_command":{
+                            "command":[
+                                "tag @s add medium"
+                            ],
+                            "target":"self"
+                        }
+                    },
+                    {
+                        "run_command":{
+                            "command":[
+                                "execute if entity @e[type=altivelis:dead_body,tag=medium,tag=wolf] run tellraw @s {\"rawtext\":[{\"text\":\"§3[霊媒]§b\"},{\"selector\":\"@e[tag=medium]\"},{\"text\":\"§3は§4人狼です\"}]}",
+                                "execute if entity @e[type=altivelis:dead_body,tag=medium,tag=human] run tellraw @s {\"rawtext\":[{\"text\":\"§3[霊媒]§b\"},{\"selector\":\"@e[tag=medium]\"},{\"text\":\"§3は§a人狼ではありません\"}]}",
+                                "tag @e remove medium"
+                            ],
+                            "target":"other"
+                        }
+                    }
+                ]
             }
         }
     }

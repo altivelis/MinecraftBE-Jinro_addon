@@ -3,14 +3,22 @@ import {
 } from "@minecraft/server";
 
 /**
+ * overworldでコマンド実行
+ * @param {String} command 
+ * @returns 
+ */
+export function runCommand(command){
+    return world.getDimension("overworld").runCommandAsync(command);
+}
+
+/**
  * コマンド実行関数
  * @author altivelis1026
  * @param {import('@minecraft/server').dimension.id|string} dimension
  * @param {string} command
- * @returns {number|null}
  */
 export function runWorld(dimension,command){
-    world.getDimension(dimension).runCommandAsync(command);
+    return world.getDimension(dimension).runCommandAsync(command);
 }
 
 /**
@@ -20,5 +28,5 @@ export function runWorld(dimension,command){
  * @param {string} command 
  */
 export function runPlayer(target,command){
-    target.runCommandAsync(command);
+    return target.runCommandAsync(command);
 }

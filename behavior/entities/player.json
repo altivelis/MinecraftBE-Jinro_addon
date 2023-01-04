@@ -199,7 +199,10 @@
         "remove": {
           "component_groups": [ "minecraft:raid_trigger" ]
         }
-      }
+      },
+      "repair":{},
+      "coin":{},
+      "gameEnd":{}
     }
   }
 }

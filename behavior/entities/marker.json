@@ -132,6 +132,14 @@
                     "target":"self"
                 }
             },
+            "glass":{
+                "run_command":{
+                    "command":[
+                        "tag @s add glass"
+                    ],
+                    "target":"self"
+                }
+            },
             "white":{
                 "run_command":{
                     "command":[

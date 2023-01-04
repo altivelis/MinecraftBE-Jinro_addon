@@ -1,9 +1,9 @@
 {
   "format_version": 2,
   "header": {
-    "name": "人狼アドオンver.0.0.2",
+    "name": "人狼アドオンver.0.1.0",
     "description": "人狼をするためのアドオン",
-    "version": [1, 0, 1],
+    "version": [1, 0, 2],
     "min_engine_version": [1, 19, 51],
     "uuid": "fab37bdb-b3ce-42b0-8105-1c8557d3dc8b"
   },
