@@ -131,6 +131,36 @@ function getCoin(player){
 async function form_shop(player){
     let form = new ui.ActionFormData()
         .title("§2§lショップ")
+        .body("文字色で区分されています\n§d役職固有アイテム\n§a全員共通アイテム");
+    let itemList = new Array();
+    const role = getScore(player,"role");
+    switch(role){
+        case 1:
+            itemList.push(
+                {name:"§d透明化のポーション",cost:4},
+                {name:"§d煙幕",cost:1},
+                {name:"§d魔法の地図",cost:10}
+            );
+            break;
+        case 2:
+            itemList.push({name:"§d魔導書",cost:6});
+            break;
+        case 3:
+            break;
+        case 4:
+            itemList.push({name:"§dお札",cost:4});
+            break;
+        case 5:
+            itemList.push({name:"§d水晶玉",cost:4});
+            break;
+    }
+    itemList.push(
+        {name:"§aナイフ",cost:4},
+        {name:"§a即死のポーション",cost:4},
+        {name:"§aスタングレネード",cost:4},
+        {name:"§aスピードのポーション",cost:2},
+        {name:"§a霊視",cost:3}
+    );
 }
 
 async function form_role_shop(player){
