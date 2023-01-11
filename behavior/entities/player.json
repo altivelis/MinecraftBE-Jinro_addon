@@ -5,7 +5,13 @@
       "identifier": "minecraft:player",
       "is_spawnable": false,
       "is_summonable": false,
-      "is_experimental": false
+      "is_experimental": false,
+      "animations":{
+      },
+      "scripts":{
+        "animate":[
+        ]
+      }
     },
 
     "component_groups": {
@@ -113,7 +119,7 @@
         "generates_bubbles": false
       },
       "minecraft:nameable": {
-        "always_show": true,
+        "always_show": false,
         "allow_name_tag_renaming": false
       },
       "minecraft:physics": {

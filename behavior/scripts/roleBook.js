@@ -1,5 +1,6 @@
 import * as mc from '@minecraft/server';
 import * as ui from '@minecraft/server-ui';
+import { runPlayer } from './runCommand';
 import { getScore } from './score';
 import { getPlayerList } from './system';
 
@@ -12,7 +13,7 @@ export async function roleBook(player){
     let form = new ui.ActionFormData().title("メニュー")
         .button("§5§l役職確認")
         .button("§2§lショップ");
-    const role = getScore(player,"role");
+    const role = getScore(player,"role");/*
     if(role){
         switch(role){
             case 1:form.button("§4§l人狼専用ショップ");break;
@@ -20,7 +21,7 @@ export async function roleBook(player){
             case 4:form.button("§3§l霊媒師専用ショップ");break;
             case 5:form.button("§5§l占い師専用ショップ");break;
         }
-    }
+    }*/
     
     const result = await form.show(player);
     if(result.canceled) return;
@@ -94,21 +95,20 @@ async function form_check_role(player){
         roleBook(player);
     }
 }
+const role_info ="§c~人狼陣営~\n§a勝利条件\n§r「市民陣営」の全滅\n"
+    +"§4人狼\n§r占われると人狼であることがわかる。特に特殊な能力は持たないが、人狼専用のショップで強力なアイテムを購入することができる。\n"
+    +"§7狂人\n§r人狼陣営の人間。占われても人狼でないと出る。最初は人狼が誰なのかわからないが、エメラルドを貯めると人狼を1人知ることができる。\n"
+    +"\n§b~市民陣営~\n§a勝利条件\n§r「人狼」の全滅\n"
+    +"§2市民\n§r何も能力を持たない普通の人間。\n"
+    +"§3霊媒師\n§r人が死んだあとに出る魂に対してお札を使うことで人狼か否かを確かめることができる。最初から1枚所持しており、エメラルドで追加のお札を購入することができる。\n"
+    +"§5占い師\n§r水晶玉を使うことで生きている人から1人選んで人狼かどうかを確かめることができる。最初から1個所持しており、エメラルドで追加の水晶玉を購入することができる。\n"
 
 async function form_check_all_role(player){
     let form = new ui.MessageFormData()
         .title("役職一覧")
         .button1("閉じる")
-        .button2("戻る");
-    let body = "";
-    body+="§c~人狼陣営~\n§a勝利条件\n§r「市民陣営」の全滅\n";
-    body+="§4人狼\n§r占われると人狼であることがわかる。特に特殊な能力は持たないが、人狼専用のショップで強力なアイテムを購入することができる。\n";
-    body+="§7狂人\n§r人狼陣営の人間。占われても人狼でないと出る。最初は人狼が誰なのかわからないが、エメラルドを貯めると人狼を1人知ることができる。\n";
-    body+="\n§b~市民陣営~\n§a勝利条件\n§r「人狼」の全滅\n";
-    body+="§2市民\n§r何も能力を持たない普通の人間。\n"
-    body+="§3霊媒師\n§r人が死んだあとに出る魂に対してお札を使うことで人狼か否かを確かめることができる。最初から1枚所持しており、エメラルドで追加のお札を購入することができる。\n";
-    body+="§5占い師\n§r水晶玉を使うことで生きている人から1人選んで人狼かどうかを確かめることができる。最初から1個所持しており、エメラルドで追加の水晶玉を購入することができる。\n";
-    form.body(body);
+        .button2("戻る")
+        .body(role_info);
     let result = await form.show(player);
     if(result.canceled) return;
     if(result.selection == 0){
@@ -117,50 +117,101 @@ async function form_check_all_role(player){
 }
 
 function getCoin(player){
-    let inventory = player.getComponent("inventory");
     let num = 0;
-    for(let i=0;i<inventory.inventorySize;i++){
-        let item = inventory.container.getItem(i);
+    const inv = player.getComponent("inventory").container;
+    for(let i=0,n=0;i<inv.size||n==inv.size-inv.emptySlotsCount-1;i++){
+        let item = inv.getItem(i);
+        if(item==undefined) continue;
         if(item.typeId=="minecraft:emerald"){
-            num += item.amount;
+            num+=item.amount;
         }
+        n++;
     }
+
     return num;
 }
 
 async function form_shop(player){
     let form = new ui.ActionFormData()
-        .title("§2§lショップ")
+        .title(`§2§lショップ §r所持:§2§l${getCoin(player)}`)
         .body("文字色で区分されています\n§d役職固有アイテム\n§a全員共通アイテム");
     let itemList = new Array();
+    itemList.push({id:0,name:"戻る"});
     const role = getScore(player,"role");
     switch(role){
         case 1:
             itemList.push(
-                {name:"§d透明化のポーション",cost:4},
-                {name:"§d煙幕",cost:1},
-                {name:"§d魔法の地図",cost:10}
+                {id:1,name:"§d人狼の斧",cost:4,texture:"textures/items/stone_axe"},
+                {id:2,name:"§d透明化のポーション",cost:4,texture:"textures/items/potion_bottle_invisibility"},
+                {id:3,name:"§d煙幕",cost:1,texture:"textures/items/snowball"},
+                {id:4,name:"§d魔法の地図",cost:10,texture:"textures/items/map_filled"}//give @s filled_map 1 2
             );
             break;
         case 2:
-            itemList.push({name:"§d魔導書",cost:6});
+            itemList.push({id:5,name:"§d魔導書",cost:6,texture:"textures/items/book_writable"});
             break;
         case 3:
             break;
         case 4:
-            itemList.push({name:"§dお札",cost:4});
+            itemList.push({id:6,name:"§dお札",cost:4,texture:"textures/items/banner_pattern"});
             break;
         case 5:
-            itemList.push({name:"§d水晶玉",cost:4});
+            itemList.push({id:7,name:"§d水晶玉",cost:4,texture:"textures/items/heartofthesea_closed"});
             break;
     }
     itemList.push(
-        {name:"§aナイフ",cost:4},
-        {name:"§a即死のポーション",cost:4},
-        {name:"§aスタングレネード",cost:4},
-        {name:"§aスピードのポーション",cost:2},
-        {name:"§a霊視",cost:3}
+        {id:8,name:"§a火薬のポーション",cost:2,texture:"textures/items/potion_bottle_splash"},
+        {id:9,name:"§aスタングレネード",cost:4,texture:"textures/items/fireworks_charge"},
+        {id:10,name:"§aスピードのポーション",cost:2,texture:"textures/items/potion_bottle_moveSpeed"},
+        {id:11,name:"§a霊視",cost:3,texture:"textures/items/ender_eye"},
+        {id:0,name:"戻る"}
     );
+    for(let item of itemList){
+        if(item.id==0){
+            form.button(`§l${item.name}`);
+            continue;
+        }
+        form.button(`§l${item.name} §r[§2${item.cost}エメラルド§r]`,(item.texture)?item.texture:undefined);
+    }
+    const result = await form.show(player);
+    if(result.canceled) return;
+    const item = itemList[result.selection];
+    if(item.cost > getCoin(player)){
+        runPlayer(player,`tellraw @s {"rawtext":[{"text":"§cエメラルドが足りません!"}]}`);
+        return;
+    }else{
+        runPlayer(player,`clear @s emerald 0 ${item.cost}`);
+        switch(item.id){
+            case 0:roleBook(player);
+                return;
+            case 1:runPlayer(player,`give @s altivelis:wolf_axe 1 0 {"keep_on_death": {}}`);
+                break;
+            case 2:runPlayer(player,`give @s altivelis:invisible_potion 1 0 {"keep_on_death": {}}`);
+                break;
+            case 3:runPlayer(player,`give @s altivelis:smoke 1 0 {"keep_on_death": {}}`);
+                break;
+            case 4:runPlayer(player,`give @s filled_map 1 2 {"keep_on_death": {}}`);
+                break;
+            case 5:runPlayer(player,`give @s altivelis:magicbook 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+                break;
+            case 6:runPlayer(player,`give @s altivelis:ohuda 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+                break;
+            case 7:runPlayer(player,`give @s altivelis:crystal 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+                break;
+            case 8:runPlayer(player,`give @s altivelis:death_splash 1 0`);
+                break;
+            case 9:runPlayer(player,`give @s altivelis:stun_grenade 1 0`);
+                break;
+            case 10:runPlayer(player,`give @s altivelis:speed_potion 1 0`);
+                break;
+            case 11:runPlayer(player,`give @s altivelis:clairvoyance 1 0`);
+                break;
+        }
+        runPlayer(player,`playsound random.pop @s ~ ~ ~ 1 1 1`);
+        mc.system.run(()=>{
+            form_shop(player);
+        })
+    }
 }
 
 async function form_role_shop(player){

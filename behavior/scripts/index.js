@@ -34,6 +34,13 @@ mc.world.events.worldInitialize.subscribe((data)=>{
     setGameOptionFromProperties();
 })
 
+const arrowDropList=[
+    "minecraft:emerald",
+    "altivelis:death_splash",
+    "altivelis:stun_grenade",
+    "altivelis:speed_potion",
+    "altivelis:clairvoyance"
+]
 mc.world.events.entityHurt.subscribe(data=>{
     let hurter = data.hurtEntity;
     let health = hurter.getComponent("health").current;
@@ -47,15 +54,30 @@ mc.world.events.entityHurt.subscribe(data=>{
                 runPlayer(hurter,`summon altivelis:dead_body ~~~ human ${hurter.nameTag}`);
             }
         }
+        const inv = hurter.getComponent("inventory").container;
+        for(let i=0,n=0;i<inv.size||n==inv.size-inv.emptySlotsCount-1;i++){
+            let item = inv.getItem(i);
+            if(item==undefined) continue;
+            if(arrowDropList.includes(item.typeId)){
+                hurter.dimension.spawnItem(item,new mc.Location(hurter.location.x,hurter.location.y,hurter.location.z));
+            }
+            n++;
+        }
+        runPlayer(hurter,`title @s title §4あなたは死亡しました`);
+        runPlayer(hurter,`title @s subtitle §cミュートしてください`);
     }
 },
-{entityTypes:["minecraft:player"]})
+{entityTypes:["minecraft:player"]});
 
 mc.world.events.itemUse.subscribe(data=>{
     let {item, source} = data;
     if(source.typeId!="minecraft:player") return;
     switch(item.typeId){
         case "altivelis:crystal": uranaiForm(source);
+            break;
+        case "altivelis:magicbook":
+            runPlayer(source,`tellraw @s {"rawtext":[{"text":"§2人狼の1人は§c "},{"selector":"@r[scores={role=1},tag=!death]"},{"text":"§2です"}]}`);
+            runPlayer(source,`replaceitem entity @s slot.weapon.mainhand 0 air 1 0`);
             break;
         case "altivelis:console": if(source.isOp()) f_systemConsole(source);
             else runPlayer(source,`tellraw @s {"rawtext":[{"text":"§4このアイテムを使うには管理者権限が必要です"}]}`);
@@ -116,6 +138,15 @@ mc.system.runSchedule(()=>{
             runPlayer(alive,`title @s actionbar §l§a${"/".repeat(current)}§f${"/".repeat(30-current)}§a${(cooldown/20.0).toFixed(1)}`);
         }else{
             runPlayer(alive,`title @s actionbar §l§a矢のチャージ完了`);
+        }
+    }
+
+    const smokeList = Array.from(mc.world.getDimension("overworld").getEntities({type:"altivelis:marker",tags:["smoke"]}))
+    for(let smoke of smokeList){
+        let time = getScore(smoke,"smoke");
+        if(time==null) continue;
+        if(time%8==0){
+            runPlayer(smoke,`function smoke`);
         }
     }
 })

@@ -38,7 +38,7 @@ tellraw @a[scores={role=5}] {"rawtext":[{"text":"§2あなたは§d占い師§2�
 gamerule dofiretick false
 gamerule mobgriefing false
 gamerule pvp true
-gamerule keepinventory false
+gamerule keepinventory true
 gamerule commandblockoutput false
 gamerule sendcommandfeedback false
 gamerule domobloot false
@@ -48,4 +48,4 @@ gamerule dotiledrops false
 gamerule doentitydrops false
 gamerule showdeathmessages false
 gamerule spawnradius 1
-gamerule doimmediaterespawn false
+gamerule doimmediaterespawn true

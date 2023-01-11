@@ -65,3 +65,10 @@ enchant @a infinity
 
 #死体
 execute as @e[type=altivelis:dead_body] at @s run particle minecraft:sculk_soul_particle ~~~
+
+#スモーク
+scoreboard players add @e[type=altivelis:marker,tag=smoke,tag=spawn] smoke -1
+scoreboard players set @e[type=altivelis:marker,tag=!spawn,tag=smoke] smoke 400
+tag @e[type=altivelis:marker,tag=smoke] add spawn
+kill @e[type=altivelis:marker,tag=smoke,scores={smoke=..0}]
+execute as @e[type=altivelis:smoke_grenade] at @s run particle minecraft:water_evaporation_manual ~~~

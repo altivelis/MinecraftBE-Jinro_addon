@@ -179,6 +179,14 @@
                     ],
                     "target":"self"
                 }
+            },
+            "smoke":{
+                "run_command":{
+                    "command":[
+                        "tag @s add smoke"
+                    ],
+                    "target":"self"
+                }
             }
         }
     }
