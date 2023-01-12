@@ -26,7 +26,7 @@ const form_role = new ui.ModalFormData()
     .slider("狂人",0,10,1,1)
     .slider("霊媒師",0,10,1,0)
     .slider("占い師",0,10,1,1);
-
+    
 export async function f_systemConsole(player){
     let result = await form_system.show(player);
     if(result.canceled) return;
@@ -88,13 +88,19 @@ async function f_gameOption(player){
     mc.world.setDynamicProperty("drowningdamage",result.formValues[8]);
     mc.world.setDynamicProperty("falldamage",result.formValues[9]);
     runCommand(`tellraw @a {"rawtext":[{"text":"§b～～ゲーム設定～～"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・人狼の相互認識:${result.formValues[0]}"}]}`);
+    runCommand(`tellraw @a {"rawtext":[{"text":"・人狼の相互認識:${result.formValues[0].toString()}"}]}`);
     runCommand(`tellraw @a {"rawtext":[{"text":"・矢のクールダウン:${result.formValues[1]}"}]}`);
     runCommand(`tellraw @a {"rawtext":[{"text":"・矢のクールダウン（ハンデ設定）:${result.formValues[2]}"}]}`);
     runCommand(`tellraw @a {"rawtext":[{"text":"・ヒット時のクールダウン:${result.formValues[3]}"}]}`);
     runCommand(`tellraw @a {"rawtext":[{"text":"・エメラルド配布間隔:${result.formValues[4]}"}]}`);
     runCommand(`tellraw @a {"rawtext":[{"text":"・エメラルド配布個数:${result.formValues[5]}"}]}`);
     runCommand(`tellraw @a {"rawtext":[{"text":"・人狼の追加配布エメラルド:${result.formValues[6]}"}]}`);
+    runCommand(`tellraw @a {"rawtext":[{"text":"・自然回復:${result.formValues[7].toString()}"}]}`);
+    runCommand(`gamerule naturalregeneration ${result.formValues[7].toString()}`);
+    runCommand(`tellraw @a {"rawtext":[{"text":"・溺死ダメージ:${result.formValues[8].toString()}"}]}`);
+    runCommand(`gamerule drowningdamage ${result.formValues[8].toString()}`);
+    runCommand(`tellraw @a {"rawtext":[{"text":"・落下ダメージ:${result.formValues[9].toString()}"}]}`);
+    runCommand(`gamerule falldamage ${result.formValues[9].toString()}`);
     setGameOptionFromProperties();
 }
 
@@ -116,21 +122,29 @@ async function f_setHandi(player){
     }
     const result = await form.show(player);
     if(result.canceled) return;
-    let handi1 = playerList[result.selection].hasTag("handi1");
-    let handi2 = playerList[result.selection].hasTag("handi2");
-    form = new ui.ModalFormData().title(`ハンデ設定:${playerList[result.selection].nameTag}`)
+    const target = playerList[result.selection];
+    let handi1 = target.hasTag("handi1");
+    let handi2 = target.hasTag("handi2");
+    form = new ui.ModalFormData().title(`ハンデ設定:${target.nameTag}`)
         .toggle("矢の弱体化",handi1)
         .toggle("矢のクールダウン増加",handi2);
     const result2 = await form.show(player);
     if(result2.formValues[0]){
-        runPlayer(playerList[result.selection],`tag @s add handi1`);
+        runPlayer(target,`tag @s add handi1`);
+        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§bハンデ:§e「矢の弱体化」§bが有効になりました"}]}`);
+        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§3あなたの矢は最大まで引き絞らないと致命傷になりません。"}]}`);
+        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§3また、矢にばらつきが付与され、遠くの敵を狙うことが困難になりました。"}]}`);
     }else{
-        runPlayer(playerList[result.selection],`tag @s remove handi1`);
+        runPlayer(target,`tag @s remove handi1`);
+        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§bハンデ:§e「矢の弱体化」§bが無効になりました"}]}`);
     }
     if(result2.formValues[1]){
-        runPlayer(playerList[result.selection],`tag @s add handi2`);
+        runPlayer(target,`tag @s add handi2`);
+        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§bハンデ:§e「矢のクールダウン増加」§bが有効になりました"}]}`);
+        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§3矢を再度放つことができるまでの時間が増加します。"}]}`);
     }else{
-        runPlayer(playerList[result.selection],`tag @s remove handi2`);
+        runPlayer(target,`tag @s remove handi2`);
+        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§bハンデ:§e「矢のクールダウン増加」§bが無効になりました"}]}`);
     }
 }
 
