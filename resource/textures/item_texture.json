@@ -1,0 +1,15 @@
+{
+    "resource_pack_name": "altivelis_Jinro",
+    "texture_name": "atlas.items",
+    "texture_data": {
+        "stone_axe":{
+            "textures":"textures/items/stone_axe"
+        },
+        "invisible_potion":{
+            "textures":"textures/items/potion_bottle_invisibility"
+        },
+        "speed_potion":{
+            "textures":"textures/items/potion_bottle_moveSpeed"
+        }
+    }
+}
