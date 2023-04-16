@@ -49,6 +49,29 @@
         "minecraft:spell_effects": {
           "remove_effects": "bad_omen"
         }
+      },
+      "disableJump":{
+        "minecraft:spell_effects":{
+          "add_effects":[
+            {
+              "effect":"jump_boost",
+              "duration":99999999999999999999,
+              "amplifier":-6000,
+              "visible":false
+            }
+          ]
+        }
+      },
+      "test":{
+        "minecraft:spawn_entity":{
+          "entities":{
+            "min_wait_time":0,
+            "max_wait_time":0,
+            "single_use":true,
+            "num_to_spawn":1,
+            "spawn_entity":"minecraft:arrow"
+          }
+        }
       }
     },
 
@@ -156,7 +179,8 @@
       },
       "minecraft:block_climber": {},
       "minecraft:environment_sensor": {
-        "triggers": {
+        "triggers":
+        {
           "filters": {
             "all_of": [
               {
@@ -204,6 +228,21 @@
       "minecraft:remove_raid_trigger": {
         "remove": {
           "component_groups": [ "minecraft:raid_trigger" ]
+        }
+      },
+      "test":{
+        "add":{
+          "component_groups":["test"]
+        }
+      },
+      "disable_jump":{
+        "add":{
+          "component_groups":["disableJump"]
+        }
+      },
+      "able_jump":{
+        "remove":{
+          "component_groups":["disableJump"]
         }
       },
       "repair":{},

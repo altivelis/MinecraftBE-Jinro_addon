@@ -11,12 +11,8 @@ export function getGlass(block){
     if(!blockId || !blockId.match(/glass/)){
         return null;
     }
-    let color = block.permutation.getProperty("color")?.value;
-    let id = null;
-    if(color){
-        id = COLOR.indexOf(color);
-    }
-    return {blockId:blockId,id:id}
+    let color = block.permutation.getProperty("color");
+    return {blockId:blockId,color:color}
 }
 /**
  * 
@@ -28,8 +24,9 @@ export async function breakGlass(origin){
     let BlockList = [];
     let WhiteList = [[origin.x,origin.y,origin.z]];
     let originGlass = getGlass(origin);
+    console.log(originGlass.color);
     runWorld(origin.dimension.id,`setblock ${origin.x} ${origin.y} ${origin.z} air 0 destroy`);
-    runWorld(origin.dimension.id,`summon altivelis:marker ${origin.x} ${origin.y} ${origin.z} glass "${originGlass.blockId}${(originGlass.id)?` ${originGlass.id}`:""}"`);
+    runWorld(origin.dimension.id,`summon altivelis:marker ${origin.x} ${origin.y} ${origin.z} glass "${originGlass.blockId}${(originGlass.color)?`.${originGlass.color}`:""}"`);
     mc.system.run(function code(){
         for(let i=0;i<20;i++){
             if(WhiteList.length==0)return;
@@ -39,11 +36,11 @@ export async function breakGlass(origin){
                     BlockList.some(list=>list.toString() == [pos[0]+x,pos[1]+y,pos[2]+z].toString()) ||
                     WhiteList.some(list=>list.toString() == [pos[0]+x,pos[1]+y,pos[2]+z].toString())    
                 ) continue;
-                let block = origin.dimension.getBlock(new mc.BlockLocation(pos[0]+x,pos[1]+y,pos[2]+z));
+                let block = origin.dimension.getBlock({x:pos[0]+x,y:pos[1]+y,z:pos[2]+z});
                 let glass = getGlass(block);
                 if(glass){
                     runWorld(block.dimension.id,`setblock ${block.x} ${block.y} ${block.z} air 0 destroy`);
-                    runWorld(block.dimension.id,`summon altivelis:marker ${block.x} ${block.y} ${block.z} glass "${glass.blockId}${(glass.id)?` ${glass.id}`:""}"`);
+                    runWorld(block.dimension.id,`summon altivelis:marker ${block.x} ${block.y} ${block.z} glass "${glass.blockId}${(glass.color)?`.${glass.color}`:""}"`);
                     WhiteList.push([block.x,block.y,block.z]);
                 }else{
                     BlockList.push([block.x,block.y,block.z]);
@@ -108,10 +105,19 @@ export function repairGlass(dimension){
             if(markerList.length==0)return;
             let marker = markerList.shift();
             if(marker.nameTag){
-                runPlayer(marker,`setblock ~~~ ${marker.nameTag}`);
+                let names = marker.nameTag.split(".",2);
+                runPlayer(marker,`setblock ~~~ ${names[0]}${((names[1])?` ["color":"${names[1]}"]`:"")}`);
                 runPlayer(marker,`kill @s`);
             }
         }
         mc.system.run(code);
     })
+}
+
+function getProperties(obj) {
+    var properties = '';
+    for (var prop in obj) {
+        properties += prop + ': ' + obj[prop] + '\n';
+    }
+    return properties;
 }

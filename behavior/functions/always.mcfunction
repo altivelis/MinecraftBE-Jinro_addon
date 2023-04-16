@@ -62,6 +62,7 @@ gamemode spectator @a[tag=death]
 #常時コマンド
 effect @a saturation 1 0 true
 enchant @a infinity
+execute if score "test" status matches 0 run effect @a instant_health 1 255 true
 
 #死体
 execute as @e[type=altivelis:dead_body] at @s run particle minecraft:sculk_soul_particle ~~~

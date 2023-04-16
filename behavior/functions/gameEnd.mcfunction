@@ -4,6 +4,6 @@ tag * remove death
 tag * remove spec
 clear @a
 kill @e[type=altivelis:dead_body]
-event entity @r repair
+execute as @r run scriptevent altivelis:repair
 scoreboard players set エメラルド配布まで roleList -1
 event entity @a gameEnd

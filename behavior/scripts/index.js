@@ -20,6 +20,11 @@ mc.world.events.worldInitialize.subscribe((data)=>{
     def.defineBoolean("drowningdamage");
     def.defineBoolean("falldamage");
     data.propertyRegistry.registerWorldDynamicProperties(def);
+    runCommand(`scoreboard objectives add system dummy`);
+    setGameOptionFromProperties();
+})
+
+export function initDynamicProperties(){
     mc.world.setDynamicProperty("wolf_knows_each_other",true);
     mc.world.setDynamicProperty("arrow_cooldown",1);
     mc.world.setDynamicProperty("arrow_handi_cooldown",10);
@@ -30,9 +35,11 @@ mc.world.events.worldInitialize.subscribe((data)=>{
     mc.world.setDynamicProperty("naturalregeneration",true);
     mc.world.setDynamicProperty("drowningdamage",true);
     mc.world.setDynamicProperty("falldamage",true);
-    runCommand(`scoreboard objectives add system dummy`);
+    runCommand(`gamerule naturalregeneration true`);
+    runCommand(`gamerule drowningdamage true`);
+    runCommand(`gamerule falldamage true`);
     setGameOptionFromProperties();
-})
+}
 
 const arrowDropList=[
     "minecraft:emerald",
@@ -59,7 +66,7 @@ mc.world.events.entityHurt.subscribe(data=>{
             let item = inv.getItem(i);
             if(item==undefined) continue;
             if(arrowDropList.includes(item.typeId)){
-                hurter.dimension.spawnItem(item,new mc.Location(hurter.location.x,hurter.location.y,hurter.location.z));
+                hurter.dimension.spawnItem(item,hurter.location);
             }
             n++;
         }
@@ -88,17 +95,18 @@ mc.world.events.itemUse.subscribe(data=>{
 })
 
 mc.world.events.projectileHit.subscribe(data=>{
-    if(data.blockHit){
+    const blockHit=data.getBlockHit(), entityHit=data.getEntityHit();
+    if(blockHit){
         if(data.projectile.typeId=="minecraft:arrow"){
-            let block = data.blockHit.block;
+            let block = blockHit.block;
             if(getGlass(block)){
                 breakGlass(block);
                 data.projectile.kill();
             }
         }
         
-    }else if(data.entityHit){
-        let hurter = data.entityHit.entity;
+    }else if(entityHit){
+        let hurter = entityHit.entity;
         let source = data.source;
         if(hurter.typeId=="minecraft:player" && source.typeId=="minecraft:player" && data.projectile.typeId=="minecraft:arrow"){
             runPlayer(source,`playsound random.orb @s ~~~ 1 1 1`);
@@ -127,7 +135,7 @@ mc.world.events.dataDrivenEntityTriggerEvent.subscribe(data=>{
     }
 })
 
-mc.system.runSchedule(()=>{
+mc.system.runInterval(()=>{
     const alivePlayerList = getPlayerList({excludeTags:["spec","death"]});
     for(let alive of alivePlayerList){
         let cooldown = getScore(alive,"cooldown");
@@ -150,5 +158,14 @@ mc.system.runSchedule(()=>{
         }
     }
 })
+
+mc.system.events.scriptEventReceive.subscribe(data=>{
+    const {id,sourceEntity} = data;
+    switch(id){
+        case "altivelis:repair":repairGlass(sourceEntity.dimension);break;
+        case "altivelis:init":initDynamicProperties();break;
+    }
+})
+
 //デバッグを開始
 //"/script debugger connect localhost 19144"

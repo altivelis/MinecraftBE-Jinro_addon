@@ -2,6 +2,7 @@ import * as mc from '@minecraft/server';
 import * as ui from '@minecraft/server-ui';
 import { runCommand, runPlayer, runWorld } from './runCommand';
 import { getScore } from './score';
+import { initDynamicProperties } from './index';
 /**
  * 
  * @param {import('@minecraft/server').EntityQueryOptions} option 
@@ -45,6 +46,7 @@ export async function f_systemConsole(player){
 }
 
 function f_initializeOption(player){
+    initDynamicProperties();
     runPlayer(player,`function init`);
     runPlayer(player,`give @s altivelis:marker_white 1`);
     runPlayer(player,`give @s altivelis:marker_red 1`);

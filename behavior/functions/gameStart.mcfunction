@@ -5,12 +5,13 @@ tag @a remove hit
 gamemode spectator @a[tag=spec]
 gamemode 2 @a[tag=!spec]
 scoreboard players set @a cooldown 0
-event entity @p repair
+execute as @r run scriptevent altivelis:repair
 clear @a
 tag @e remove tp
 function tpPlayers
 scoreboard players set "test" status 1
 kill @e[type=altivelis:dead_body]
+effect @a instant_health 1 255 true
 
 
 #アイテム配布
