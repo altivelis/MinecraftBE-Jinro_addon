@@ -141,10 +141,10 @@ async function form_shop(player){
     switch(role){
         case 1:
             itemList.push(
-                {id:1,name:"§d人狼の斧",cost:4,texture:"textures/items/stone_axe"},
+                {id:1,name:"§d人狼の斧",cost:2,texture:"textures/items/stone_axe"},
                 {id:2,name:"§d透明化のポーション",cost:4,texture:"textures/items/potion_bottle_invisibility"},
                 {id:3,name:"§d煙幕",cost:1,texture:"textures/items/snowball"},
-                {id:4,name:"§d魔法の地図",cost:10,texture:"textures/items/map_filled"}//give @s filled_map 1 2
+                {id:4,name:"§d魔法の地図",cost:4,texture:"textures/items/map_filled"}//give @s filled_map 1 2
             );
             break;
         case 2:

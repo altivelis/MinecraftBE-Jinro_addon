@@ -50,7 +50,7 @@ function f_initializeOption(player){
     runPlayer(player,`function init`);
     runPlayer(player,`give @s altivelis:marker_white 1`);
     runPlayer(player,`give @s altivelis:marker_red 1`);
-    runPlayer(player,`tellraw @s {"rawtext":[{"text":"「marker_white」§2:ロビーに1つ設置してください。\n(2つ以上置けないようになっています)\n§f「§cmarker_red§f」§2:ゲーム開始地点に人数分設置してください。"}]}`);
+    player.sendMessage("「marker_white」§2:ロビーに1つ設置してください。\n(2つ以上置けないようになっています)\n§f「§cmarker_red§f」§2:ゲーム開始地点に人数分設置してください。");
 
 }
 
