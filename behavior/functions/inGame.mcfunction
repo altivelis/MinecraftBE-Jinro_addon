@@ -4,5 +4,5 @@ scoreboard players set エメラルド配布まで roleList 0
 scoreboard players operation エメラルド配布まで roleList = coin cooldown
 scoreboard players operation エメラルド配布まで roleList /= tick cooldown
 #エメラルド配布
-execute if score coin cooldown matches 0 run event entity @a[tag=!spec,tag=!death] coin
+execute if score coin cooldown matches 0 run scriptevent altivelis:coin
 execute if score coin cooldown matches 0 run function coinCooldown

@@ -27,7 +27,7 @@ mc.world.events.worldInitialize.subscribe((data)=>{
 export function initDynamicProperties(){
     mc.world.setDynamicProperty("wolf_knows_each_other",true);
     mc.world.setDynamicProperty("arrow_cooldown",1);
-    mc.world.setDynamicProperty("arrow_handi_cooldown",10);
+    mc.world.setDynamicProperty("arrow_handi_cooldown",5);
     mc.world.setDynamicProperty("arrow_hit_cooldown",30);
     mc.world.setDynamicProperty("coin_cooldown",120);
     mc.world.setDynamicProperty("num_of_coin",1);
@@ -70,8 +70,12 @@ mc.world.events.entityHurt.subscribe(data=>{
             }
             n++;
         }
-        runPlayer(hurter,`title @s title §4あなたは死亡しました`);
-        runPlayer(hurter,`title @s subtitle §cミュートしてください`);
+        hurter.onScreenDisplay.setTitle("§4あなたは死亡しました",{
+            fadeInSeconds:0,
+            fadeOutSeconds:1,
+            staySeconds:3,
+            subtitle:"§cミュートしてください"
+        });
     }
 },
 {entityTypes:["minecraft:player"]});
@@ -87,7 +91,7 @@ mc.world.events.itemUse.subscribe(data=>{
             runPlayer(source,`replaceitem entity @s slot.weapon.mainhand 0 air 1 0`);
             break;
         case "altivelis:console": if(source.isOp()) f_systemConsole(source);
-            else runPlayer(source,`tellraw @s {"rawtext":[{"text":"§4このアイテムを使うには管理者権限が必要です"}]}`);
+            else source.sendMessage("§4このアイテムを使うには管理者権限が必要です");
             break;
         case "altivelis:role_book": roleBook(source);
             break;
@@ -109,8 +113,8 @@ mc.world.events.projectileHit.subscribe(data=>{
         let hurter = entityHit.entity;
         let source = data.source;
         if(hurter.typeId=="minecraft:player" && source.typeId=="minecraft:player" && data.projectile.typeId=="minecraft:arrow"){
-            runPlayer(source,`playsound random.orb @s ~~~ 1 1 1`);
-            runPlayer(source,`tag @s add hit`);
+            source.playSound("random.orb",{location:source.location,pitch:1,volume:1});
+            source.addTag("hit");
         }
     }else{
 
@@ -164,8 +168,29 @@ mc.system.events.scriptEventReceive.subscribe(data=>{
     switch(id){
         case "altivelis:repair":repairGlass(sourceEntity.dimension);break;
         case "altivelis:init":initDynamicProperties();break;
+        case "altivelis:coin":giveEmerald();break;
     }
 })
+
+function giveEmerald(){
+    let coin = mc.world.getDynamicProperty("num_of_coin");
+    let wolf_coin = mc.world.getDynamicProperty("wolf_coin");
+    if(coin>0){
+        for(const player of mc.world.getPlayers({excludeTags:["spec","death"]})){
+            const inv = player.getComponent(mc.EntityInventoryComponent.componentId).container;
+            inv.addItem(new mc.ItemStack(mc.MinecraftItemTypes.emerald,coin));
+        }
+        mc.world.sendMessage(`§l§a[全員配布]§rエメラルドが${coin}個配られました`);
+    }
+    if(wolf_coin>0){
+        for(const wolf of mc.world.getPlayers({excludeTags:["spec","death"],scoreOptions:[{objective:"role",maxScore:1,minScore:1}]})){
+            const inv = wolf.getComponent(mc.EntityInventoryComponent.componentId).container;
+            inv.addItem(new mc.ItemStack(mc.MinecraftItemTypes.emerald,wolf_coin));
+            wolf.sendMessage(`§l§c[人狼限定]§rエメラルドが${wolf_coin}個配られました。`);
+            wolf.sendMessage(`§l§4[注意!]§c市民よりエメラルドが多いことを悟られないでください!`);
+        }
+    }
+}
 
 //デバッグを開始
 //"/script debugger connect localhost 19144"

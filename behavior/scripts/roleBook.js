@@ -177,7 +177,7 @@ async function form_shop(player){
     if(result.canceled) return;
     const item = itemList[result.selection];
     if(item.cost > getCoin(player)){
-        runPlayer(player,`tellraw @s {"rawtext":[{"text":"§cエメラルドが足りません!"}]}`);
+        player.sendMessage("§cエメラルドが足りません!");
         return;
     }else{
         runPlayer(player,`clear @s emerald 0 ${item.cost}`);
