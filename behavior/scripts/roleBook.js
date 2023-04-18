@@ -4,6 +4,31 @@ import { runPlayer } from './runCommand';
 import { getScore } from './score';
 import { getPlayerList } from './system';
 
+let itemList = [];
+let pushItem;
+pushItem=new mc.ItemStack("altivelis:wolf_axe"); pushItem.keepOnDeath=true;
+itemList.push({role:1,item:pushItem.clone(),cost:2,texture:"textures/items/stone_axe"});
+pushItem=new mc.ItemStack("altivelis:invisible_potion"); pushItem.keepOnDeath=true;
+itemList.push({role:1,item:pushItem.clone(),cost:4,texture:"textures/items/potion_bottle_invisibility"});
+pushItem=new mc.ItemStack("altivelis:smoke"); pushItem.keepOnDeath=true;
+itemList.push({role:1,item:pushItem.clone(),cost:1,texture:"textures/items/snowball"});
+pushItem=new mc.ItemStack(mc.MinecraftItemTypes.filledMap); pushItem.keepOnDeath=true;
+itemList.push({role:1,item:pushItem.clone(),cost:4,texture:"textures/items/map_filled"});
+
+pushItem=new mc.ItemStack("altivelis:magicbook"); pushItem.keepOnDeath=true; pushItem.lockMode=mc.ItemLockMode.inventory;
+itemList.push({role:2,item:pushItem.clone(),cost:4,texture:"textures/items/book_writable"});
+
+pushItem=new mc.ItemStack("altivelis:ohuda"); pushItem.keepOnDeath=true; pushItem.lockMode=mc.ItemLockMode.inventory;
+itemList.push({role:4,item:pushItem.clone(),cost:4,texture:"textures/items/banner_pattern"});
+
+pushItem=new mc.ItemStack("altivelis:crystal"); pushItem.keepOnDeath=true; pushItem.lockMode=mc.ItemLockMode.inventory;
+itemList.push({role:5,item:pushItem.clone(),cost:4,texture:"textures/items/potion_bottle_splash"});
+
+itemList.push([
+    {role:0,item:new mc.ItemStack("altivelis:death_splash"),cost:2,texture:"textures/items/potion_bottle_splash"},
+    {role:0,item:new mc.ItemStack("altivelis:stun_grenade"),cost:4,texture:"textures/items/fireworks_charge"}
+])
+
 /**
  * メニューを出す
  * @param {import('@minecraft/server').Player} player 
@@ -31,9 +56,6 @@ export async function roleBook(player){
             break;
         case 1:
             form_shop(player);
-            break;
-        case 2:
-            form_role_shop(player);
             break;
     }
 }
@@ -148,7 +170,7 @@ async function form_shop(player){
             );
             break;
         case 2:
-            itemList.push({id:5,name:"§d魔導書",cost:6,texture:"textures/items/book_writable"});
+            itemList.push({id:5,name:"§d魔導書",cost:4,texture:"textures/items/book_writable"});
             break;
         case 3:
             break;
@@ -181,51 +203,61 @@ async function form_shop(player){
         return;
     }else{
         runPlayer(player,`clear @s emerald 0 ${item.cost}`);
+        let giveItem;
         switch(item.id){
             case 0:roleBook(player);
                 return;
-            case 1:runPlayer(player,`give @s altivelis:wolf_axe 1 0 {"keep_on_death": {}}`);
+            case 1://runPlayer(player,`give @s altivelis:wolf_axe 1 0 {"keep_on_death": {}}`);
+                giveItem=new mc.ItemStack("altivelis:wolf_axe",1);
+                giveItem.keepOnDeath=true;
                 break;
-            case 2:runPlayer(player,`give @s altivelis:invisible_potion 1 0 {"keep_on_death": {}}`);
+            case 2://runPlayer(player,`give @s altivelis:invisible_potion 1 0 {"keep_on_death": {}}`);
+                giveItem=new mc.ItemStack("altivelis:invisible_potion",1);
+                giveItem.keepOnDeath=true;
                 break;
-            case 3:runPlayer(player,`give @s altivelis:smoke 1 0 {"keep_on_death": {}}`);
+            case 3://runPlayer(player,`give @s altivelis:smoke 1 0 {"keep_on_death": {}}`);
+                giveItem=new mc.ItemStack("altivelis:smoke",1);
+                giveItem.keepOnDeath=true;
                 break;
-            case 4:runPlayer(player,`give @s filled_map 1 2 {"keep_on_death": {}}`);
+            case 4://runPlayer(player,`give @s filled_map 1 2 {"keep_on_death": {}}`);
+                giveItem=new mc.ItemStack(mc.MinecraftItemTypes.filledMap,1);
+                giveItem.keepOnDeath=true;
                 break;
-            case 5:runPlayer(player,`give @s altivelis:magicbook 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+            case 5://runPlayer(player,`give @s altivelis:magicbook 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+                giveItem=new mc.ItemStack("altivelis:magicbook",1);
+                giveItem.keepOnDeath=true;
+                giveItem.lockMode=mc.ItemLockMode.inventory;
                 break;
-            case 6:runPlayer(player,`give @s altivelis:ohuda 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+            case 6://runPlayer(player,`give @s altivelis:ohuda 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+                giveItem=new mc.ItemStack("altivelis:ohuda",1);
+                giveItem.keepOnDeath=true;
+                giveItem.lockMode=mc.ItemLockMode.inventory;
                 break;
-            case 7:runPlayer(player,`give @s altivelis:crystal 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+            case 7://runPlayer(player,`give @s altivelis:crystal 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
+                giveItem=new mc.ItemStack("altivelis:crystal",1);
+                giveItem.keepOnDeath=true;
+                giveItem.lockMode=mc.ItemLockMode.inventory;
                 break;
-            case 8:runPlayer(player,`give @s altivelis:death_splash 1 0`);
+            case 8://runPlayer(player,`give @s altivelis:death_splash 1 0`);
+                giveItem=new mc.ItemStack("altivelis:death_splash",1);
                 break;
-            case 9:runPlayer(player,`give @s altivelis:stun_grenade 1 0`);
+            case 9://runPlayer(player,`give @s altivelis:stun_grenade 1 0`);
+                giveItem=new mc.ItemStack("altivelis:stun_grenade",1);
                 break;
-            case 10:runPlayer(player,`give @s altivelis:speed_potion 1 0`);
+            case 10://runPlayer(player,`give @s altivelis:speed_potion 1 0`);
+                giveItem=new mc.ItemStack("altivelis:speed_potion",1);
                 break;
-            case 11:runPlayer(player,`give @s altivelis:clairvoyance 1 0`);
+            case 11://runPlayer(player,`give @s altivelis:clairvoyance 1 0`);
+                giveItem=new mc.ItemStack("altivelis:clairvoyance",1);
                 break;
+        }
+        if(giveItem){
+            const inv = player.getComponent(mc.EntityInventoryComponent.componentId).container;
+            inv.addItem(giveItem);
         }
         runPlayer(player,`playsound random.pop @s ~ ~ ~ 1 1 1`);
         mc.system.run(()=>{
             form_shop(player);
         })
-    }
-}
-
-async function form_role_shop(player){
-    const role = getScore(player,"role");
-    switch(role){
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
     }
 }
