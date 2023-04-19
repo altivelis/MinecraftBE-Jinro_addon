@@ -6,6 +6,7 @@ import { runCommand, runPlayer, runWorld } from "./runCommand";
 import { getScore } from "./score";
 import { f_systemConsole, getPlayerList, setGameOptionFromProperties } from "./system";
 import { uranaiForm } from "./uranai";
+import "./killlog";
 
 mc.world.events.worldInitialize.subscribe((data)=>{
     let def = new mc.DynamicPropertiesDefinition();
@@ -19,7 +20,7 @@ mc.world.events.worldInitialize.subscribe((data)=>{
     def.defineBoolean("naturalregeneration");
     def.defineBoolean("drowningdamage");
     def.defineBoolean("falldamage");
-    def.defineString("killlog",10000);
+    def.defineString("killlog",1000);
     data.propertyRegistry.registerWorldDynamicProperties(def);
     runCommand(`scoreboard objectives add system dummy`);
     setGameOptionFromProperties();

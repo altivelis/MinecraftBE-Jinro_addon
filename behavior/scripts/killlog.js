@@ -20,6 +20,7 @@ mc.system.events.scriptEventReceive.subscribe(data=>{
     const {id} = data;
     switch(id){
         case "altivelis:showLog":
+            mc.world.sendMessage("§c～～キルログ～～")
             mc.world.sendMessage(mc.world.getDynamicProperty("killlog"));
             mc.world.setDynamicProperty("killlog","");
             break;

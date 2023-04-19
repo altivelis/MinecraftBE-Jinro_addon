@@ -128,7 +128,7 @@ function getCoin(player){
 
     return num;
 }
-
+/*
 async function form_shop(player){
     let form = new ui.ActionFormData()
         .title(`§2§lショップ §r所持:§2§l${getCoin(player)}`)
@@ -195,9 +195,9 @@ async function form_shop(player){
                 giveItem=new mc.ItemStack("altivelis:smoke",1);
                 giveItem.keepOnDeath=true;
                 break;
-            case 4://runPlayer(player,`give @s filled_map 1 2 {"keep_on_death": {}}`);
-                giveItem=new mc.ItemStack(mc.MinecraftItemTypes.filledMap,1);
-                giveItem.keepOnDeath=true;
+            case 4:
+                runPlayer(player,`give @s filled_map 1 2 {"keep_on_death": {}}`);
+                giveItem=null;
                 break;
             case 5://runPlayer(player,`give @s altivelis:magicbook 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}`);
                 giveItem=new mc.ItemStack("altivelis:magicbook",1);
@@ -236,4 +236,50 @@ async function form_shop(player){
             form_shop(player);
         })
     }
+}
+*/
+async function form_shop(player){
+    let form = new ui.ActionFormData()
+        .title(`§2§lショップ §r所持:§2§l${getCoin(player)}`)
+        .body("文字色で区分されています\n§d役職固有アイテム\n§a全員共通アイテム");
+    let list = new Array();
+    const role = getScore(player,"role");
+    itemList.forEach((Element)=>{
+        if(Element.role==0 || Element.role==role){
+            list.push(Element);
+        }
+    });
+    form.button("<<戻る<<");
+    list.forEach((Element)=>{
+        form.button(`§l${Element.name} §r[§2${Element.cost}エメラルド§r]`,Element.texture);
+    });
+    form.button("<<戻る<<");
+    const result = await form.show(player);
+    if(result.canceled) return;
+    if(result.selection==0 || result.selection==list.length+1){
+        roleBook(player);
+        return;
+    }
+    const select = list[result.selection-1];
+    if(select.cost>getCoin(player)){
+        player.sendMessage("§cエメラルドが足りません!");
+        return;
+    }
+    runPlayer(player,`clear @s emerald 0 ${select.cost}`);
+    let giveItem = select.item.clone();
+    if(giveItem.typeId=="minecraft:filled_map"){
+        runPlayer(player,`give @s filled_map 1 2 {"keep_on_death": {}}`);
+        player.playSound("random.pop",{location:player.location});
+        form_shop(player);
+        return;
+    }
+    giveItem.keepOnDeath=select.keep;
+    if(giveItem.lock){
+        giveItem.lockMode=mc.ItemLockMode.inventory;
+    }
+    giveItem.setLore(select.lore);
+    const inv = player.getComponent(mc.EntityInventoryComponent.componentId).container;
+    inv.addItem(giveItem);
+    player.playSound("random.pop",{location:player.location});
+    form_shop(player);
 }
