@@ -7,7 +7,7 @@
       },
       "components": {
         "minecraft:display_name":{
-          "value":"§d透明化のポーション\n§7不可視(0:15)"
+          "value":"§d透明化のポーション\n§7不可視(0:20)"
         },
         "minecraft:icon":{
           "texture":"invisible_potion"
@@ -31,7 +31,7 @@
           "add_mob_effect":{
             "effect":"invisibility",
             "amplifier":0,
-            "duration":15,
+            "duration":20,
             "target":"holder"
           }
         }

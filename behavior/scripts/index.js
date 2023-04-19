@@ -19,6 +19,7 @@ mc.world.events.worldInitialize.subscribe((data)=>{
     def.defineBoolean("naturalregeneration");
     def.defineBoolean("drowningdamage");
     def.defineBoolean("falldamage");
+    def.defineString("killlog",10000);
     data.propertyRegistry.registerWorldDynamicProperties(def);
     runCommand(`scoreboard objectives add system dummy`);
     setGameOptionFromProperties();

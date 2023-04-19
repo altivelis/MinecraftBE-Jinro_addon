@@ -12,6 +12,7 @@ function tpPlayers
 scoreboard players set "test" status 1
 kill @e[type=altivelis:dead_body]
 effect @a instant_health 1 255 true
+scriptevent altivelis:resetLog
 
 
 #アイテム配布
