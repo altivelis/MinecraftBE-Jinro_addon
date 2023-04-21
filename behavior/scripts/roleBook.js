@@ -191,8 +191,12 @@ async function form_help(player){
     if(res.canceled)return;
     let res2;
     switch(res.selection){
-        case 0:
+        case 0:res2 = await f_help_game.show(player);break;
+        case 1:res2 = await f_help_role.show(player);break;
+        case 2:res2 = await f_help_item.show(player);break;
     }
+    if(res2.canceled)return;
+    form_help(player);
 }
 
 const f_help_game = new ui.ActionFormData()
@@ -205,4 +209,22 @@ const f_help_game = new ui.ActionFormData()
         +"§r・勝利条件\n人狼陣営:§l市民陣営§rの全滅\n市民陣営:§l人狼§rの全滅\n"
         +"・エメラルド\n一定時間ごとにエメラルドが配られます。\nエメラルドを使ってショップでアイテムを購入することができます。\n"
         +"エメラルドは人に渡すことができます。自分で使うだけでなく、みんなで集めることで強力なアイテムを早く手に入れることができます。\n"
+        +"・弓\n当たればワンパンの弓です。\n撃つごとにクールダウンがあり、人に当てるとさらに長いクールダウンがあります。\n"
+        +"ハンデを付けた人はクールダウンが増えたり、弓を引き絞り切らないとワンパンでなくなったりします。\n"
     )
+    .button("<<戻る<<");
+
+const f_help_role = new ui.ActionFormData()
+    .title("§l§3役職について")
+    .body(role_info)
+    .button("<<戻る<<");
+
+let itemStr="";
+for(const e of itemList){
+    itemStr += "§l" + e.name + ` §r[§2${e.cost}エメラルド§r]\n` + e.lore.join("\n") +"\n";
+}
+
+const f_help_item = new ui.ActionFormData()
+    .title("§l§2アイテムについて")
+    .body(itemStr)
+    .button("<<戻る<<");
