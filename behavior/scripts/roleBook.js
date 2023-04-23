@@ -35,6 +35,22 @@ export async function roleBook(player){
  * @param {mc.Player} player 
  */
 async function form_check_role(player){
+    if(getScore("test","status")!=1){
+        let form = new ui.MessageFormData()
+            .title("待機中")
+            .body("まだゲームは始まっていません。\nホストがゲームを開始するまでお待ちください。")
+            .button1("役職の説明")
+            .button2("戻る");
+        let result = await form.show(player);
+        if(result.canceled) return;
+        if(result.selection == 1){
+            form_check_all_role(player);
+        }
+        if(result.selection == 0){
+            roleBook(player);
+        }
+        return;
+    }
     let form = new ui.MessageFormData().title("役職確認");
     let body = "";
     const role = getScore(player,"role");
@@ -100,16 +116,13 @@ const role_info ="§c~人狼陣営~\n§a勝利条件\n§r「市民陣営」の�
     +"§5占い師\n§r水晶玉を使うことで生きている人から1人選んで人狼かどうかを確かめることができる。最初から1個所持しており、エメラルドで追加の水晶玉を購入することができる。\n"
 
 async function form_check_all_role(player){
-    let form = new ui.MessageFormData()
+    let form = new ui.ActionFormData()
         .title("役職一覧")
-        .button1("閉じる")
-        .button2("戻る")
-        .body(role_info);
+        .body(role_info)
+        .button("戻る");
     let result = await form.show(player);
     if(result.canceled) return;
-    if(result.selection == 0){
-        form_check_role(player);
-    }
+    form_check_role(player);
 }
 
 function getCoin(player){
@@ -186,7 +199,8 @@ async function form_help(player){
     .title("§l§aヘルプ")
     .button("§l§4人狼ゲームについて")
     .button("§l§3役職について")
-    .button("§l§2アイテムについて");
+    .button("§l§2アイテムについて")
+    .button("§l§5占い・霊媒結果について");
     const res = await f_help.show(player);
     if(res.canceled)return;
     let res2;
@@ -194,6 +208,7 @@ async function form_help(player){
         case 0:res2 = await f_help_game.show(player);break;
         case 1:res2 = await f_help_role.show(player);break;
         case 2:res2 = await f_help_item.show(player);break;
+        case 3:res2 = await f_help_uranai.show(player);break;
     }
     if(res2.canceled)return;
     form_help(player);
@@ -221,10 +236,21 @@ const f_help_role = new ui.ActionFormData()
 
 let itemStr="";
 for(const e of itemList){
-    itemStr += "§l" + e.name + ` §r[§2${e.cost}エメラルド§r]\n` + e.lore.join("\n") +"\n";
+    itemStr += "§l" + e.name + ` §r[§2${e.cost}エメラルド§r]\n` + e.lore.join("\n") +"\n\n";
 }
 
 const f_help_item = new ui.ActionFormData()
     .title("§l§2アイテムについて")
     .body(itemStr)
+    .button("<<戻る<<");
+
+export const f_help_uranai = new ui.ActionFormData()
+    .title("§l§5占い・霊媒結果について")
+    .body(
+        "§l§c人狼§rかどうかを確かめることができます。\n"
+        +"狂人はわかりません。"
+        +"人狼の場合は「§bOO§dは§4人狼です§r」\n"
+        +"そうでない場合は「§bOO§dは§a人狼ではありません§r」\n"
+        +"と出ます。"
+    )
     .button("<<戻る<<");

@@ -95,7 +95,7 @@ export const itemList = [
         name:"§aスピードのポーション"
     },
     {
-        role:0,item:new mc.ItemStack("altivelis:clairvoyance"),keep:false,lock:false,cost:3,texture:"textures/items/ender_eye",
+        role:0,item:new mc.ItemStack("altivelis:clairvoyance"),keep:false,lock:false,cost:2,texture:"textures/items/ender_eye",
         lore:[
             "使用するとその時存在している死体のネームタグが見えるようになる。",
             "後から死亡した人の名前は見えないので再度使用する必要がある。",
@@ -103,4 +103,13 @@ export const itemList = [
         ],
         name:"§a霊視"
     },
+    {
+        role:0,item:new mc.ItemStack("altivelis:bell"),keep:false,lock:false,cost:4,texture:"textures/items/villagebell",
+        lore:[
+            "使用すると15秒間、使用者以外が壁越しに見えるようになる。",
+            "使用時に鐘の音が鳴る。",
+            "このアイテムは死亡時にドロップする。"
+        ],
+        name:"§a錆びたティアベル"
+    }
 ];

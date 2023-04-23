@@ -1,0 +1,10 @@
+//bridge-file-version: #12
+{
+    "materials": {
+        "version": "1.0.0",
+        "glowing:charged_creeper": 
+        {
+            "depthFunc": "Always"
+        }
+    }
+}

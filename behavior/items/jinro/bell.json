@@ -1,0 +1,38 @@
+{
+  "format_version": "1.19.50",
+  "minecraft:item": {
+    "description": {
+      "identifier": "altivelis:bell",
+      "category":"Items"
+    },
+    "components": {
+      "minecraft:display_name":{
+        "value":"§a錆びたティアベル"
+      },
+      "minecraft:icon":{
+        "texture":"bell"
+      },
+      "minecraft:foil":true,
+      "minecraft:max_stack_size":1,
+      "minecraft:on_use":{
+        "on_use":{
+          "event":"use",
+          "target":"self"
+        }
+      }
+    },
+    "events":{
+      "use":{
+        "run_command":{
+          "command":[
+            "playsound block.bell.hit @a ~ ~ ~ 1 1 0.3",
+            "scoreboard players set @a[tag=!death,tag=!spec,rm=0.01,scores={glow=..300}] glow 300"
+          ],
+          "target":"holder"
+        },
+        "swing":{},
+        "decrement_stack":{}
+      }
+    }
+  }
+}

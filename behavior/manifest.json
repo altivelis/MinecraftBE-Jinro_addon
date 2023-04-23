@@ -1,10 +1,10 @@
 {
   "format_version": 2,
   "header": {
-    "name": "人狼アドオンver.0.1.0",
+    "name": "人狼アドオンver.0.3.0",
     "description": "人狼をするためのアドオン",
-    "version": [1, 0, 2],
-    "min_engine_version": [1, 19, 51],
+    "version": [1, 0, 3],
+    "min_engine_version": [1, 19, 70],
     "uuid": "fab37bdb-b3ce-42b0-8105-1c8557d3dc8b"
   },
   "modules": [
@@ -20,9 +20,9 @@
       "language": "javascript",
       "uuid":"418df424-8474-4383-8283-87be89690b63",
       "version":[
+        1,
         0,
-        0,
-        1
+        0
       ],
       "entry":"scripts/index.js"
     }
@@ -30,7 +30,7 @@
   "dependencies":[
     {
       "uuid": "4c8f67a0-4ed0-42bd-a396-7b4c924e2df2",
-      "version": [1, 0, 1]
+      "version": [1, 0, 2]
     },
     {
       "module_name": "@minecraft/server",

@@ -13,6 +13,7 @@ scoreboard players set "test" status 1
 kill @e[type=altivelis:dead_body]
 effect @a instant_health 1 255 true
 scriptevent altivelis:resetLog
+scoreboard players set @a glow 0
 
 
 #アイテム配布

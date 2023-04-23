@@ -63,6 +63,7 @@ gamemode spectator @a[tag=death]
 effect @a saturation 1 0 true
 enchant @a infinity
 execute if score "test" status matches 0 run effect @a instant_health 1 255 true
+execute as @a unless entity @s[hasitem={item=altivelis:role_book}] run give @s altivelis:role_book 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_inventory"}}
 
 #死体
 execute as @e[type=altivelis:dead_body] at @s run particle minecraft:sculk_soul_particle ~~~
@@ -73,3 +74,9 @@ scoreboard players set @e[type=altivelis:marker,tag=!spawn,tag=smoke] smoke 400
 tag @e[type=altivelis:marker,tag=smoke] add spawn
 kill @e[type=altivelis:marker,tag=smoke,scores={smoke=..0}]
 execute as @e[type=altivelis:smoke_grenade] at @s run particle minecraft:water_evaporation_manual ~~~
+
+#発光
+scoreboard players add @a glow 0
+execute as @a[tag=!death,tag=!spec,scores={glow=..0},hasitem={item=altivelis:glow_chestplate_red,location=slot.armor.chest,slot=0}] run replaceitem entity @s slot.armor.chest 0 air
+execute as @a[tag=!death,tag=!spec,scores={glow=1..}] run replaceitem entity @s slot.armor.chest 0 altivelis:glow_chestplate_red 1 0 {"keep_on_death": {},"item_lock":{"mode":"lock_in_slot"}}
+scoreboard players add @a glow -1

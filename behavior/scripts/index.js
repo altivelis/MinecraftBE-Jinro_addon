@@ -7,6 +7,7 @@ import { getScore } from "./score";
 import { f_systemConsole, getPlayerList, setGameOptionFromProperties } from "./system";
 import { uranaiForm } from "./uranai";
 import "./killlog";
+import { f_help_uranai } from "./roleBook";
 
 mc.world.events.worldInitialize.subscribe((data)=>{
     let def = new mc.DynamicPropertiesDefinition();
@@ -43,12 +44,13 @@ export function initDynamicProperties(){
     setGameOptionFromProperties();
 }
 
-const arrowDropList=[
+const allowDropList=[
     "minecraft:emerald",
     "altivelis:death_splash",
     "altivelis:stun_grenade",
     "altivelis:speed_potion",
-    "altivelis:clairvoyance"
+    "altivelis:clairvoyance",
+    "altivelis:bell"
 ]
 mc.world.events.entityHurt.subscribe(data=>{
     let hurter = data.hurtEntity;
@@ -58,16 +60,16 @@ mc.world.events.entityHurt.subscribe(data=>{
         let role = getScore(hurter,"role");
         if(role){
             if(role==1){
-                runPlayer(hurter,`summon altivelis:dead_body ~~~ wolf ${hurter.nameTag}`);
+                runPlayer(hurter,`summon altivelis:dead_body ~~~~~ wolf ${hurter.nameTag}`);
             }else{
-                runPlayer(hurter,`summon altivelis:dead_body ~~~ human ${hurter.nameTag}`);
+                runPlayer(hurter,`summon altivelis:dead_body ~~~~~ human ${hurter.nameTag}`);
             }
         }
         const inv = hurter.getComponent("inventory").container;
         for(let i=0,n=0;i<inv.size||n==inv.size-inv.emptySlotsCount-1;i++){
             let item = inv.getItem(i);
             if(item==undefined) continue;
-            if(arrowDropList.includes(item.typeId)){
+            if(allowDropList.includes(item.typeId)){
                 hurter.dimension.spawnItem(item,hurter.location);
             }
             n++;
@@ -123,24 +125,6 @@ mc.world.events.projectileHit.subscribe(data=>{
     }
 })
 
-mc.world.events.dataDrivenEntityTriggerEvent.subscribe(data=>{
-    let {entity,id} = data;
-    if(entity.typeId!="minecraft:player") return;
-    switch(id){
-        case "repair": repairGlass(entity.dimension);
-            break;
-        case "coin": 
-            let coin = mc.world.getDynamicProperty("num_of_coin");
-            let wolf_coin = mc.world.getDynamicProperty("wolf_coin");
-            if(coin>0) runPlayer(entity,`give @s minecraft:emerald ${coin} 0`)
-            if(wolf_coin>0) runPlayer(entity,`give @s[scores={role=1}] minecraft:emerald ${wolf_coin}`)
-            break;
-        case "gameEnd":
-            if(entity.isOp()) runPlayer(entity,`give @s altivelis:console`);
-            break;
-    }
-})
-
 mc.system.runInterval(()=>{
     const alivePlayerList = getPlayerList({excludeTags:["spec","death"]});
     for(let alive of alivePlayerList){
@@ -165,12 +149,44 @@ mc.system.runInterval(()=>{
     }
 })
 
-mc.system.events.scriptEventReceive.subscribe(data=>{
-    const {id,sourceEntity} = data;
+mc.system.events.scriptEventReceive.subscribe(async data=>{
+    const {id,sourceEntity,message} = data;
     switch(id){
         case "altivelis:repair":repairGlass(sourceEntity.dimension);break;
         case "altivelis:init":initDynamicProperties();break;
         case "altivelis:coin":giveEmerald();break;
+        case "altivelis:gameend":
+            for(const player of mc.world.getAllPlayers()){
+                if(player.isOp()){
+                    const inv = player.getComponent(mc.EntityInventoryComponent.componentId).container;
+                    let item = new mc.ItemStack("altivelis:console");
+                    item.lockMode=mc.ItemLockMode.inventory;
+                    inv.addItem(item);
+                }
+            }
+            break;
+        case "altivelis:medium":
+            const entity = Array.from(sourceEntity.dimension.getEntities({tags:["medium"],type:"altivelis:dead_body"}))[0];
+            const name = entity.nameTag;
+            let text = "";
+            if(entity.hasTag("wolf")){
+                text=`§b${name}§3は§4人狼です`;
+            }
+            else if(entity.hasTag("human")){
+                text=`§b${name}§3は§a人狼ではありません`;
+            }
+            const result_form = new ui.MessageFormData()
+                .title("§3霊媒結果")
+                .body(text)
+                .button1("ヘルプ:霊媒結果について")
+                .button2("OK");
+            while(1){
+                const res2 = await result_form.show(sourceEntity);
+                if(res2.canceled || res2.selection==0)return;
+                const res3 = await f_help_uranai.show(sourceEntity);
+                if(res3.canceled) return;
+            }
+            break;
     }
 })
 

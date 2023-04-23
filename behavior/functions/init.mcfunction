@@ -8,6 +8,7 @@ scoreboard players set "test" status 0
 scoreboard objectives add cooldown dummy
 scoreboard objectives add cooldown_max dummy
 scoreboard objectives add smoke dummy
+scoreboard objectives add glow dummy
 scoreboard players set tick cooldown 20
 scoreboard objectives setdisplay sidebar roleList
 

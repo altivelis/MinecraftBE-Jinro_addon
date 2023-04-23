@@ -10,6 +10,12 @@
         },
         "speed_potion":{
             "textures":"textures/items/potion_bottle_moveSpeed"
+        },
+        "bell":{
+            "textures":"textures/items/villagebell"
+        },
+        "red_chestplate":{
+            "textures":"textures/red_chestplate"
         }
     }
 }

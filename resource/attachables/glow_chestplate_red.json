@@ -1,0 +1,24 @@
+//bridge-file-version: #3
+{
+	"format_version": "1.8.0",
+	"minecraft:attachable": {
+		"description": {
+			"identifier": "altivelis:glow_chestplate_red",
+			"materials": {
+				"default": "glowing"
+			},
+			"textures": {
+				"default": "textures/alt_models/armor_red_1"
+			},
+			"geometry": {
+				"default": "geometry.humanoid.armor.chestplate"
+			},
+			"scripts": {
+				"parent_setup": "variable.chest_layer_visible = 0.0;"
+			},
+			"render_controllers": [
+				"controller.render.alt_armor"
+			]
+		}
+	}
+}

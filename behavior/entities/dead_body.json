@@ -145,6 +145,7 @@
                             "command":[
                                 "execute if entity @e[type=altivelis:dead_body,tag=medium,tag=wolf] run tellraw @s {\"rawtext\":[{\"text\":\"§3[霊媒]§b\"},{\"selector\":\"@e[tag=medium]\"},{\"text\":\"§3は§4人狼です\"}]}",
                                 "execute if entity @e[type=altivelis:dead_body,tag=medium,tag=human] run tellraw @s {\"rawtext\":[{\"text\":\"§3[霊媒]§b\"},{\"selector\":\"@e[tag=medium]\"},{\"text\":\"§3は§a人狼ではありません\"}]}",
+                                "scriptevent altivelis:medium",
                                 "tag @e remove medium"
                             ],
                             "target":"other"

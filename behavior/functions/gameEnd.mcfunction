@@ -7,4 +7,4 @@ kill @e[type=altivelis:dead_body]
 kill @e[type=minecraft:item]
 execute as @r run scriptevent altivelis:repair
 scoreboard players set エメラルド配布まで roleList -1
-event entity @a gameEnd
+scriptevent altivelis:gameend
