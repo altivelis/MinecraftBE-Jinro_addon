@@ -46,7 +46,7 @@
       "hit":{
         "run_command":{
           "command":[
-            "summon altivelis:marker ~ ~ ~ smoke",
+            "summon altivelis:marker ~ ~ ~ ~ ~ smoke",
             "particle minecraft:egg_destroy_emitter ~~~",
             "kill @s"
           ],
