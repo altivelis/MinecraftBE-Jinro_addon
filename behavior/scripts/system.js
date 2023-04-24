@@ -132,10 +132,12 @@ async function f_setHandi(player){
         .toggle("矢のクールダウン増加",handi2);
     const result2 = await form.show(player);
     if(result2.formValues[0]){
-        runPlayer(target,`tag @s add handi1`);
-        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§bハンデ:§e「矢の弱体化」§bが有効になりました"}]}`);
-        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§3あなたの矢は最大まで引き絞らないと致命傷になりません。"}]}`);
-        runPlayer(target,`tellraw @s {"rawtext":[{"text":"§3また、矢にばらつきが付与され、遠くの敵を狙うことが困難になりました。"}]}`);
+        target.addTag("handi1");
+        target.sendMessage(
+            "§bハンデ:§e「矢の弱体化」§bが有効になりました\n"
+            +"§3最大まで引き絞らないと致命傷になりません。\n"
+            +"§3また、矢にばらつきが付与され、遠くの敵を狙うことが困難になりました。"
+        )
     }else{
         runPlayer(target,`tag @s remove handi1`);
         runPlayer(target,`tellraw @s {"rawtext":[{"text":"§bハンデ:§e「矢の弱体化」§bが無効になりました"}]}`);
