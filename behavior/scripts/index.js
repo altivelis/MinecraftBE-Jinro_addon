@@ -31,7 +31,7 @@ export function initDynamicProperties(){
     mc.world.setDynamicProperty("wolf_knows_each_other",true);
     mc.world.setDynamicProperty("arrow_cooldown",1);
     mc.world.setDynamicProperty("arrow_handi_cooldown",5);
-    mc.world.setDynamicProperty("arrow_hit_cooldown",30);
+    mc.world.setDynamicProperty("arrow_hit_cooldown",10);
     mc.world.setDynamicProperty("coin_cooldown",120);
     mc.world.setDynamicProperty("num_of_coin",1);
     mc.world.setDynamicProperty("wolf_coin",0);

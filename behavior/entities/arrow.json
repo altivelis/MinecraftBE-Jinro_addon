@@ -12,7 +12,7 @@
         "minecraft:projectile": {
           "on_hit": {
             "impact_damage": {
-              "damage": 5,
+              "damage": 10,
               "knockback": true,
               "semi_random_diff_damage": true,
               "destroy_on_hit": true,
@@ -35,7 +35,7 @@
           "hit_sound": "bow.hit",
           "power": 5.0,
           "gravity": 0.05,
-          "uncertainty_base": 5,
+          "uncertainty_base": 1,
           "uncertainty_multiplier": 0,
           "anchor": 1,
           "should_bounce": true,

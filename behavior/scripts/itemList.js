@@ -58,7 +58,7 @@ export const itemList = [
         name:"§dお札"
     },
     {
-        role:5,item:new mc.ItemStack("altivelis:crystal"),keep:true,lock:true,cost:4,texture:"textures/items/potion_bottle_splash",
+        role:5,item:new mc.ItemStack("altivelis:crystal"),keep:true,lock:true,cost:4,texture:"textures/items/heartofthesea_closed",
         lore:[
             "占い師専用アイテム",
             "生存者から1人選んで人狼かどうかを確かめることができる。",

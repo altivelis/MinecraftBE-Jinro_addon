@@ -29,7 +29,7 @@
                 "swing":{},
                 "run_command":{
                     "command":[
-                        "execute align xyz positioned ~0.5~~0.5 run summon altivelis:marker ~ ~ ~ ~ ~ purple"
+                        "execute align xyz positioned ~0.5~~0.5 run summon altivelis:marker ~ ~ ~ purple"
                     ],
                     "target":"holder"
                 }

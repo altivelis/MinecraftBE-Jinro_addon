@@ -26,7 +26,7 @@ export async function breakGlass(origin){
     let originGlass = getGlass(origin);
     console.log(originGlass.color);
     runWorld(origin.dimension.id,`setblock ${origin.x} ${origin.y} ${origin.z} air [] destroy`);
-    runWorld(origin.dimension.id,`summon altivelis:marker ${origin.x} ${origin.y} ${origin.z} ~ ~ glass "${originGlass.blockId}${(originGlass.color)?`.${originGlass.color}`:""}"`);
+    runWorld(origin.dimension.id,`summon altivelis:marker ${origin.x} ${origin.y} ${origin.z} 0 0 glass "${originGlass.blockId}${(originGlass.color)?`.${originGlass.color}`:""}"`);
     mc.system.run(function code(){
         for(let i=0;i<20;i++){
             if(WhiteList.length==0)return;
@@ -40,7 +40,7 @@ export async function breakGlass(origin){
                 let glass = getGlass(block);
                 if(glass){
                     runWorld(block.dimension.id,`setblock ${block.x} ${block.y} ${block.z} air [] destroy`);
-                    runWorld(block.dimension.id,`summon altivelis:marker ${block.x} ${block.y} ${block.z} ~ ~ glass "${glass.blockId}${(glass.color)?`.${glass.color}`:""}"`);
+                    runWorld(block.dimension.id,`summon altivelis:marker ${block.x} ${block.y} ${block.z} 0 0 glass "${glass.blockId}${(glass.color)?`.${glass.color}`:""}"`);
                     WhiteList.push([block.x,block.y,block.z]);
                 }else{
                     BlockList.push([block.x,block.y,block.z]);
