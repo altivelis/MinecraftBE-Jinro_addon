@@ -36,8 +36,8 @@ scoreboard players operation @a[tag=shot,tag=!handi2,tag=!hit] cooldown = arrow_
 scoreboard players operation @a[tag=shot,tag=!handi2,tag=!hit] cooldown *= tick cooldown
 scoreboard players operation @a[tag=shot,tag=handi2,tag=!hit] cooldown = arrow_handi_cooldown system
 scoreboard players operation @a[tag=shot,tag=handi2,tag=!hit] cooldown *= tick cooldown
-scoreboard players operation @a[tag=hit] cooldown = arrow_hit_cooldown system
-scoreboard players operation @a[tag=hit] cooldown *= tick cooldown
+scoreboard players operation @a[tag=hit,tag=handi3] cooldown = arrow_hit_cooldown system
+scoreboard players operation @a[tag=hit,tag=handi3] cooldown *= tick cooldown
 execute as @a[tag=shot] run scoreboard players operation @s cooldown_max = @s cooldown
 execute as @a[tag=hit] run scoreboard players operation @s cooldown_max = @s cooldown
 clear @a[tag=shot] minecraft:arrow

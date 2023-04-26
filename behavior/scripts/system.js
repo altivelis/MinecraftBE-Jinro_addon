@@ -21,13 +21,6 @@ const form_system = new ui.ActionFormData()
     .button("§3§lハンデ設定","textures/gui/newgui/mob_effects/slowness_effect")
     .button("§5§lゲームスタート","textures/ui/icon_book_writable");
 
-const form_role = new ui.ModalFormData()
-    .title("役職設定")
-    .slider("人狼",1,10,1,1)
-    .slider("狂人",0,10,1,1)
-    .slider("霊媒師",0,10,1,0)
-    .slider("占い師",0,10,1,1);
-    
 export async function f_systemConsole(player){
     let result = await form_system.show(player);
     if(result.canceled) return;
@@ -51,10 +44,15 @@ function f_initializeOption(player){
     runPlayer(player,`give @s altivelis:marker_white 1`);
     runPlayer(player,`give @s altivelis:marker_red 1`);
     player.sendMessage("「marker_white」§2:ロビーに1つ設置してください。\n(2つ以上置けないようになっています)\n§f「§cmarker_red§f」§2:ゲーム開始地点に人数分設置してください。");
-
 }
 
 async function f_setRole(player){
+    const form_role = new ui.ModalFormData()
+        .title("役職設定")
+        .slider("人狼",1,10,1,getScore("人狼","roleList"))
+        .slider("狂人",0,10,1,getScore("狂人","roleList"))
+        .slider("霊媒師",0,10,1,getScore("霊媒師","roleList"))
+        .slider("占い師",0,10,1,getScore("占い師","roleList"));
     let result = await form_role.show(player);
     if(result.canceled) return;
     runCommand(`scoreboard players set "人狼" roleList ${result.formValues[0]}`);

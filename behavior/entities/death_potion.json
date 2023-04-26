@@ -9,14 +9,7 @@
         "runtime_identifier":"minecraft:splash_potion"
       },
       "component_groups":{
-        "explode":{
-            "minecraft:explode":{
-                "breaks_blocks":false,
-                "fuse_length":[0,0],
-                "fuse_lit":true,
-                "power":3
-            }
-        }
+        "minecraft:instant_despawn":{}
       },
       "components": {
         "minecraft:collision_box": {

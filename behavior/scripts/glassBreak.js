@@ -49,7 +49,8 @@ export async function breakGlass(origin){
         }
         mc.system.run(code);
     })
-    
+}
+
 export function repairGlass(dimension){
     let markerList = Array.from(dimension.getEntities({
         type:"altivelis:marker",

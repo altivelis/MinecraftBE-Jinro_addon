@@ -35,7 +35,7 @@
           "hit_sound": "bow.hit",
           "power": 5.0,
           "gravity": 0.05,
-          "uncertainty_base": 1,
+          "uncertainty_base": 3,
           "uncertainty_multiplier": 0,
           "anchor": 1,
           "should_bounce": true,

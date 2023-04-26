@@ -38,9 +38,6 @@ export function initDynamicProperties(){
     mc.world.setDynamicProperty("naturalregeneration",true);
     mc.world.setDynamicProperty("drowningdamage",true);
     mc.world.setDynamicProperty("falldamage",true);
-    runCommand(`gamerule naturalregeneration true`);
-    runCommand(`gamerule drowningdamage true`);
-    runCommand(`gamerule falldamage true`);
     setGameOptionFromProperties();
 }
 
@@ -54,9 +51,9 @@ const allowDropList=[
 ]
 mc.world.events.entityHurt.subscribe(data=>{
     let hurter = data.hurtEntity;
-    let health = hurter.getComponent("health").current;
+    let health = hurter.getComponent(mc.EntityHealthComponent.componentId).current;
     if(health<=0.0){
-        runPlayer(hurter,`tag @s add death`);
+        hurter.addTag(death);
         let role = getScore(hurter,"role");
         if(role){
             if(role==1){
@@ -65,7 +62,7 @@ mc.world.events.entityHurt.subscribe(data=>{
                 runPlayer(hurter,`summon altivelis:dead_body ~~~~~ human ${hurter.nameTag}`);
             }
         }
-        const inv = hurter.getComponent("inventory").container;
+        const inv = hurter.getComponent(mc.EntityInventoryComponent.componentId).container;
         for(let i=0,n=0;i<inv.size||n==inv.size-inv.emptySlotsCount-1;i++){
             let item = inv.getItem(i);
             if(item==undefined) continue;
@@ -118,11 +115,17 @@ mc.world.events.projectileHit.subscribe(data=>{
         let source = data.source;
         if(hurter.typeId=="minecraft:player" && source.typeId=="minecraft:player" && data.projectile.typeId=="minecraft:arrow"){
             source.playSound("random.orb",{location:source.location,pitch:1,volume:1});
-            source.addTag("hit");
+            if(hurter.getComponent(mc.EntityHealthComponent.componentId).current<=0)source.addTag("hit");
         }
-    }else{
-
     }
+})
+
+mc.world.events.projectileHit.subscribe(data=>{
+    const {dimension,location,projectile} = data;
+    if(projectile.typeId!="altivelis:death_potion")return;
+    projectile.kill();
+    location.y+=0.5;
+    dimension.createExplosion(location,3,{allowUnderwater:false,breaksBlocks:false,causesFire:false,source:projectile});
 })
 
 mc.system.runInterval(()=>{

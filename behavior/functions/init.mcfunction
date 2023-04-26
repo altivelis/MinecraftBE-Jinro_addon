@@ -27,3 +27,8 @@ gamerule showdeathmessages false
 gamerule spawnradius 1
 gamerule doimmediaterespawn true
 gamerule showtags false
+
+scoreboard players set "人狼" roleList 1
+scoreboard players set "狂人" roleList 1
+scoreboard players set "霊媒師" roleList 1
+scoreboard players set "占い師" roleList 1
