@@ -79,30 +79,41 @@ async function f_gameOption(player){
 
     let result = await form_option.show(player);
     if(result.canceled) return;
-    mc.world.setDynamicProperty("wolf_knows_each_other",result.formValues[0]);
-    mc.world.setDynamicProperty("arrow_cooldown",result.formValues[1]);
-    mc.world.setDynamicProperty("arrow_handi_cooldown",result.formValues[2]);
-    mc.world.setDynamicProperty("arrow_hit_cooldown",result.formValues[3]);
-    mc.world.setDynamicProperty("coin_cooldown",result.formValues[4]);
-    mc.world.setDynamicProperty("num_of_coin",result.formValues[5]);
-    mc.world.setDynamicProperty("wolf_coin",result.formValues[6]);
-    mc.world.setDynamicProperty("naturalregeneration",result.formValues[7]);
-    mc.world.setDynamicProperty("drowningdamage",result.formValues[8]);
-    mc.world.setDynamicProperty("falldamage",result.formValues[9]);
-    runCommand(`tellraw @a {"rawtext":[{"text":"§b～～ゲーム設定～～"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・人狼の相互認識:${result.formValues[0].toString()}"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・矢のクールダウン:${result.formValues[1]}"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・矢のクールダウン（ハンデ設定）:${result.formValues[2]}"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・ヒット時のクールダウン:${result.formValues[3]}"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・エメラルド配布間隔:${result.formValues[4]}"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・エメラルド配布個数:${result.formValues[5]}"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・人狼の追加配布エメラルド:${result.formValues[6]}"}]}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・自然回復:${result.formValues[7].toString()}"}]}`);
-    runCommand(`gamerule naturalregeneration ${result.formValues[7].toString()}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・溺死ダメージ:${result.formValues[8].toString()}"}]}`);
-    runCommand(`gamerule drowningdamage ${result.formValues[8].toString()}`);
-    runCommand(`tellraw @a {"rawtext":[{"text":"・落下ダメージ:${result.formValues[9].toString()}"}]}`);
-    runCommand(`gamerule falldamage ${result.formValues[9].toString()}`);
+    const [
+        wolf_knows_each_other,
+        arrow_cooldown,
+        arrow_handi_cooldown,
+        arrow_hit_cooldown,
+        coin_cooldown,
+        num_of_coin,
+        wolf_coin,
+        naturalregeneration,
+        drowningdamage,
+        falldamage
+    ] = result.formValues;
+    mc.world.setDynamicProperty("wolf_knows_each_other",wolf_knows_each_other);
+    mc.world.setDynamicProperty("arrow_cooldown",arrow_cooldown);
+    mc.world.setDynamicProperty("arrow_handi_cooldown",arrow_handi_cooldown);
+    mc.world.setDynamicProperty("arrow_hit_cooldown",arrow_hit_cooldown);
+    mc.world.setDynamicProperty("coin_cooldown",coin_cooldown);
+    mc.world.setDynamicProperty("num_of_coin",num_of_coin);
+    mc.world.setDynamicProperty("wolf_coin",wolf_coin);
+    mc.world.setDynamicProperty("naturalregeneration",naturalregeneration);
+    mc.world.setDynamicProperty("drowningdamage",drowningdamage);
+    mc.world.setDynamicProperty("falldamage",falldamage);
+    mc.world.sendMessage(
+        "§b～～ゲーム設定～～§r"
+        +`\n・人狼の相互認識:${wolf_knows_each_other.toString()}`
+        +`\n・矢のクールダウン:${arrow_cooldown}`
+        +`\n・矢のクールダウン（ハンデ設定）:${arrow_handi_cooldown}`
+        +`\n・ヒット時のクールダウン（ハンデ設定）:${arrow_hit_cooldown}`
+        +`\n・エメラルド配布間隔:${coin_cooldown}`
+        +`\n・エメラルド配布個数:${num_of_coin}`
+        +`\n・人狼の追加配布エメラルド:${wolf_coin}`
+        +`\n・自然回復:${naturalregeneration}`
+        +`\n・溺死ダメージ:${drowningdamage}`
+        +`\n・落下ダメージ:${falldamage}`
+    )
     setGameOptionFromProperties();
 }
 
@@ -114,6 +125,9 @@ export function setGameOptionFromProperties(){
     runCommand(`scoreboard players set coin_cooldown system ${mc.world.getDynamicProperty("coin_cooldown")}`);
     runCommand(`scoreboard players set num_of_coin system ${mc.world.getDynamicProperty("num_of_coin")}`);
     runCommand(`scoreboard players set wolf_coin system ${mc.world.getDynamicProperty("wolf_coin")}`);
+    runCommand(`gamerule naturalregeneration ${mc.world.getDynamicProperty("naturalregeneration")}`);
+    runCommand(`gamerule drowningdamage ${mc.world.getDynamicProperty("drowningdamage")}`);
+    runCommand(`gamerule falldamage ${mc.world.getDynamicProperty("falldamage")}`);
 }
 
 async function f_setHandi(player){
@@ -128,10 +142,10 @@ async function f_setHandi(player){
     const result = await form.show(player);
     if(result.canceled)return;
     for(let i=0; i<result.formValues.length; i++){
-        const target=playerList[index/4];
+        const target=playerList[Math.floor(i/4)];
         const value = result.formValues[i];
         switch(i%4){
-            case 0:break;
+            case 0:continue;
             case 1:
                 if(value){
                     if(!target.hasTag("handi1"))target.addTag("handi1");
@@ -140,7 +154,7 @@ async function f_setHandi(player){
                     if(target.hasTag("handi1"))target.removeTag("handi1");
                     target.sendMessage("§b[ハンデ]§e「矢の弱体化」§3:無効");
                 }
-                break;
+                continue;
             case 2:
                 if(value){
                     if(!target.hasTag("handi2"))target.addTag("handi2");
@@ -149,7 +163,7 @@ async function f_setHandi(player){
                     if(target.hasTag("handi2"))target.removeTag("handi2");
                     target.sendMessage("§b[ハンデ]§e「矢のクールダウン増加」§3:無効");
                 }
-                break;
+                continue;
             case 3:
                 if(value){
                     if(!target.hasTag("handi3"))target.addTag("handi3");
@@ -158,23 +172,26 @@ async function f_setHandi(player){
                     if(target.hasTag("handi3"))target.removeTag("handi3");
                     target.sendMessage("§b[ハンデ]§e「キルクールダウン」§3:無効");
                 }
-                break;
+                continue;
         }
     }
 }
 
+/**
+ * @param {mc.Player} player 
+ */
 async function f_startGame(player){
     if(getScore("市民","roleList")<0){
-        runPlayer(player,`tellraw @s {"rawtext":[{"text":"§4[Warning!]§l§c役職に対して人数が足りていません!"}]}`);
+        player.sendMessage("§4[Warning!]§l§c役職に対して人数が足りていません!");
         return;
     }
     if(Array.from(player.dimension.getEntities({type:"altivelis:marker",tags:["red"]})).length < getPlayerList({excludeTags:["spec"]}).length){
-        runPlayer(player,`tellraw @s {"rawtext":[{"text":"§4[Warning!]§l§c赤マーカーの数が足りません!"}]}`);
+        player.sendMessage("§4[Warning!]§l§c赤マーカーの数が足りません!");
         return;
     }
     if(Array.from(player.dimension.getEntities({type:"altivelis:marker",tags:["white"]})).length < 1){
-        runPlayer(player,`tellraw @s {"rawtext":[{"text":"§4[Warning!]§l§c白マーカーがありません!"}]}`);
+        player.sendMessage("§4[Warning!]§l§c白マーカーがありません!");
         return;
     }
-    runPlayer(player,`function gameStart`)
+    runPlayer(player,`function gameStart`);
 }

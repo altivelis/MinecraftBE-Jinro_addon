@@ -49,52 +49,7 @@ export async function breakGlass(origin){
         }
         mc.system.run(code);
     })
-/*
-    for(const pos of WhiteList){
-        for(const [x,y,z] of lists){
-            if(
-                BlockList.some(list=>list.toString() == [pos[0]+x,pos[1]+y,pos[2]+z].toString()) ||
-                WhiteList.some(list=>list.toString() == [pos[0]+x,pos[1]+y,pos[2]+z].toString()) //||
-                //pos[0]+x-origin.x < -5 || pos[0]+x-origin.x > 5 ||
-                //pos[1]+y-origin.y < -5 || pos[1]+y-origin.y > 5 ||
-                //pos[2]+z-origin.z < -5 || pos[2]+z-origin.z > 5
-            ) continue;
-            let block = origin.dimension.getBlock(new mc.BlockLocation(pos[0]+x,pos[1]+y,pos[2]+z));
-            let glass = getGlass(block);
-            console.log(JSON.stringify(glass));
-            if(glass){
-                //runWorld(block.dimension.id,`setblock ${block.x} ${block.y} ${block.z} air 0 destroy`);
-                //runWorld(block.dimension.id,`summon altivelis:marker ${block.x} ${block.y} ${block.z} glass "${glass.blockId}${(glass.id)?` ${glass.id}`:""}"`);
-                WhiteList.push([block.x,block.y,block.z]);
-            }else{
-                BlockList.push([block.x,block.y,block.z]);
-            }
-        }
-    }*/
-}
-/*export function breakGlass(block){
-    let BlockList = Array();
-    getGlassList(block,BlockList);
-    console.log(BlockList);
-
-    array.push(block.location);
-    console.log(array);
-    let glass = getGlass(block);
-    console.log("run2");
-    if(glass){
-        block.run=true;
-        let pos = block.location;
-        let dimension = block.dimension
-        runWorld(dimension.id,`setblock ${pos.x} ${pos.y} ${pos.z} air 0 destroy`);
-        runWorld(dimension.id,`summon altivelis:marker ${pos.x} ${pos.y} ${pos.z} glass "${glass.blockId}${(glass.id)?` ${glass.id}`:""}"`)
-        breakGlass(dimension.getBlock(pos.offset(0,0,-1)),array);
-        breakGlass(dimension.getBlock(pos.offset(0,0,1)),array);
-        breakGlass(dimension.getBlock(pos.offset(-1,0,0)),array);
-        breakGlass(dimension.getBlock(pos.offset(1,0,0)),array);
-        breakGlass(dimension.getBlock(pos.offset(0,1,0)),array);
-        breakGlass(dimension.getBlock(pos.offset(0,-1,0)),array);
-    }
-}*/
+    
 export function repairGlass(dimension){
     let markerList = Array.from(dimension.getEntities({
         type:"altivelis:marker",

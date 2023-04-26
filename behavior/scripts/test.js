@@ -13,7 +13,7 @@ async function f_setHandi(player){
     const result = await form.show(player);
     if(result.canceled)return;
     result.formValues.forEach((value,index)=>{
-        const target = playerList[index/4];
+        const target = playerList[Math.floor(index/4)];
         switch(index%4){
             case 0:break;
             case 1:

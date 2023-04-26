@@ -259,5 +259,6 @@ export const f_help_uranai = new ui.ActionFormData()
 const f_help_handi = new ui.ActionFormData()
     .title("§l§8ハンデについて")
     .body(
-        ""
+        "まだ書いてないよ!"
     )
+    .button("<<戻る<<");
