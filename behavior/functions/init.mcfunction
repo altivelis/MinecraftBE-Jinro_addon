@@ -26,4 +26,4 @@ gamerule doentitydrops false
 gamerule showdeathmessages false
 gamerule spawnradius 1
 gamerule doimmediaterespawn true
-
+gamerule showtags false
