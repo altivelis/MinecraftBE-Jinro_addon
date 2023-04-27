@@ -40,7 +40,7 @@
           "variable.map_angle = math.clamp(1 - variable.player_x_rotation / 45.1, 0.0, 1.0);",
           "variable.item_use_normalized = query.main_hand_item_use_duration / query.main_hand_item_max_duration;",
 
-          "v.test = v.test==0 && q.distance_from_camera == 0 ? 1 : v.test;"
+          "v.test = v.test == 0 && q.distance_from_camera == 0 ? 1 : v.test;"
         ],
         "variables":{
           "variable.test":"public"
@@ -104,11 +104,6 @@
 		    "tooting_goat_horn": "animation.humanoid.tooting_goat_horn"
       },
       "render_controllers": [
-        { "controller.render.player.first_person_spectator": "variable.is_first_person && query.is_spectator" },
-        { "controller.render.player.third_person_spectator": "!variable.is_first_person && !variable.map_face_icon && query.is_spectator" },
-        { "controller.render.player.first_person": "variable.is_first_person && !query.is_spectator" },
-        { "controller.render.player.third_person": "!variable.is_first_person && !variable.map_face_icon && !query.is_spectator" },
-        { "controller.render.player.map": "variable.map_face_icon" },
         { "controller.render.player.through": 
         "v.tmp=0;
         for_each(t.player,q.get_nearby_entities(1000,'minecraft:player'),
@@ -117,11 +112,32 @@
           (t.player->v.test)==1 &&
           (t.player->q.is_spectator)==1 &&
           !v.is_first_person &&
+          !variable.map_face_icon &&
+          !query.is_spectator &&
           v.test==0
-          ?1:0;
-          v.test == ? break;
+          ? 1 : 0;
+          v.tmp == 1 ? break;
         });
-        return v.test;" }
+        return v.tmp;" },
+        { "controller.render.player.first_person_spectator": "variable.is_first_person && query.is_spectator" },
+        { "controller.render.player.third_person_spectator": "!variable.is_first_person && !variable.map_face_icon && query.is_spectator" },
+        { "controller.render.player.first_person": "variable.is_first_person && !query.is_spectator" },
+        { "controller.render.player.third_person": "v.test == 1 && !variable.is_first_person && !variable.map_face_icon && !query.is_spectator" },
+        { "controller.render.player.third_person": "v.tmp=0;
+        for_each(t.player,q.get_nearby_entities(1000,'minecraft:player'),
+        {
+          v.tmp=
+          (t.player->v.test)==1 &&
+          (t.player->q.is_spectator)==0 &&
+          !v.is_first_person &&
+          !variable.map_face_icon &&
+          !query.is_spectator &&
+          v.test==0
+          ? 1 : 0;
+          v.tmp == 1 ? break;
+        });
+        return v.tmp;" },
+        { "controller.render.player.map": "variable.map_face_icon" }
       ],
       "enable_attachables": true
     }

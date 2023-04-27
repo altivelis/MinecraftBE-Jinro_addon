@@ -3,7 +3,7 @@
   "header": {
     "name": "人狼アドオン[R] ver.0.0.2",
     "description": "人狼アドオン用のリソースパック",
-    "version": [1, 0, 2],
+    "version": [1, 0, 12],
     "min_engine_version": [1, 19, 70],
     "uuid": "4c8f67a0-4ed0-42bd-a396-7b4c924e2df2"
   },
