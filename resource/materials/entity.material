@@ -2,8 +2,10 @@
 {
     "materials": {
         "version": "1.0.0",
-        "glowing:charged_creeper": 
-        {
+        "glowing:charged_creeper": {
+            "depthFunc": "Always"
+        },
+        "through:entity_alphatest": {
             "depthFunc": "Always"
         }
     }
