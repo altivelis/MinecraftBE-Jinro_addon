@@ -8,6 +8,7 @@ import { f_systemConsole, getPlayerList, setGameOptionFromProperties } from "./s
 import { uranaiForm } from "./uranai";
 import "./killlog";
 import { f_help_uranai } from "./roleBook";
+import "./spectator"
 
 mc.world.events.worldInitialize.subscribe((data)=>{
     let def = new mc.DynamicPropertiesDefinition();
