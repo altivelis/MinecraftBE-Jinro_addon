@@ -50,11 +50,12 @@ const allowDropList=[
     "altivelis:clairvoyance",
     "altivelis:bell"
 ]
+
 mc.world.events.entityHurt.subscribe(data=>{
     let hurter = data.hurtEntity;
     let health = hurter.getComponent(mc.EntityHealthComponent.componentId).current;
     if(health<=0.0){
-        hurter.addTag(death);
+        hurter.addTag("death");
         let role = getScore(hurter,"role");
         if(role){
             if(role==1){
@@ -78,6 +79,7 @@ mc.world.events.entityHurt.subscribe(data=>{
             staySeconds:3,
             subtitle:"§cミュートしてください"
         });
+        hurter.sendMessage("§7霊界チャットが有効になりました。観戦者同士で会話ができます。\n「.tp」でプレイヤーへテレポート、「!」を先頭につけると全体にチャットできます。");
     }
 },
 {entityTypes:["minecraft:player"]});
@@ -213,6 +215,13 @@ function giveEmerald(){
         }
     }
 }
+
+mc.world.events.playerSpawn.subscribe(data=>{
+    const {initialSpawn,player} = data;
+    if(initialSpawn && getScore("test","status")==1){
+        player.addTag("spec");
+    }
+})
 
 //デバッグを開始
 //"/script debugger connect localhost 19144"

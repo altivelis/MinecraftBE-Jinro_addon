@@ -25,7 +25,7 @@
       "use":{
         "run_command":{
           "command":[
-            "playsound block.bell.hit @a ~ ~ ~ 1 1 0.3",
+            "playsound note.bell @a ~ ~ ~ 1 1.5 0.3",
             "scoreboard players set @a[tag=!death,tag=!spec,rm=0.01,scores={glow=..300}] glow 300"
           ],
           "target":"holder"

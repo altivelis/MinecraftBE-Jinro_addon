@@ -5,7 +5,7 @@
         "glowing:charged_creeper": {
             "depthFunc": "Always"
         },
-        "through:entity_alphatest": {
+        "through:entity_emissive_alpha": {
             "depthFunc": "Always"
         }
     }
