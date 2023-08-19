@@ -10,7 +10,7 @@ import "./killlog";
 import { f_help_uranai } from "./roleBook";
 import "./spectator"
 
-mc.world.events.worldInitialize.subscribe((data)=>{
+mc.world.afterEvents.worldInitialize.subscribe((data)=>{
     let def = new mc.DynamicPropertiesDefinition();
     def.defineBoolean("wolf_knows_each_other");
     def.defineNumber("arrow_cooldown");
@@ -51,9 +51,9 @@ const allowDropList=[
     "altivelis:bell"
 ]
 
-mc.world.events.entityHurt.subscribe(data=>{
+mc.world.afterEvents.entityHurt.subscribe(data=>{
     let hurter = data.hurtEntity;
-    let health = hurter.getComponent(mc.EntityHealthComponent.componentId).current;
+    let health = hurter.getComponent(mc.EntityHealthComponent.componentId).currentValue;
     if(health<=0.0){
         hurter.addTag("death");
         let role = getScore(hurter,"role");
@@ -73,7 +73,8 @@ mc.world.events.entityHurt.subscribe(data=>{
             }
             n++;
         }
-        hurter.onScreenDisplay.setTitle("§4あなたは死亡しました",{
+        let player = mc.world.getPlayers({name:hurter.nameTag,location:hurter.location});
+        player[0].onScreenDisplay.setTitle("§4あなたは死亡しました",{
             fadeInSeconds:0,
             fadeOutSeconds:1,
             staySeconds:3,
@@ -84,8 +85,8 @@ mc.world.events.entityHurt.subscribe(data=>{
 },
 {entityTypes:["minecraft:player"]});
 
-mc.world.events.itemUse.subscribe(data=>{
-    let {item, source} = data;
+mc.world.afterEvents.itemUse.subscribe(data=>{
+    let {itemStack:item, source} = data;
     if(source.typeId!="minecraft:player") return;
     switch(item.typeId){
         case "altivelis:crystal": uranaiForm(source);
@@ -102,7 +103,7 @@ mc.world.events.itemUse.subscribe(data=>{
     }
 })
 
-mc.world.events.projectileHit.subscribe(data=>{
+mc.world.afterEvents.projectileHit.subscribe(data=>{
     const blockHit=data.getBlockHit(), entityHit=data.getEntityHit();
     if(blockHit){
         if(data.projectile.typeId=="minecraft:arrow"){
@@ -123,7 +124,7 @@ mc.world.events.projectileHit.subscribe(data=>{
     }
 })
 
-mc.world.events.projectileHit.subscribe(data=>{
+mc.world.afterEvents.projectileHit.subscribe(data=>{
     const {dimension,location,projectile} = data;
     if(projectile.typeId!="altivelis:death_potion")return;
     projectile.kill();
@@ -155,7 +156,7 @@ mc.system.runInterval(()=>{
     }
 })
 
-mc.system.events.scriptEventReceive.subscribe(async data=>{
+mc.system.afterEvents.scriptEventReceive.subscribe(async data=>{
     const {id,sourceEntity,message} = data;
     switch(id){
         case "altivelis:repair":repairGlass(sourceEntity.dimension);break;
@@ -216,7 +217,7 @@ function giveEmerald(){
     }
 }
 
-mc.world.events.playerSpawn.subscribe(data=>{
+mc.world.afterEvents.playerSpawn.subscribe(data=>{
     const {initialSpawn,player} = data;
     if(initialSpawn && getScore("test","status")==1){
         player.addTag("spec");
