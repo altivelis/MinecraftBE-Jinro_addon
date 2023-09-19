@@ -1,7 +1,7 @@
 import * as mc from "@minecraft/server";
 import { getScore } from "./score";
 
-mc.world.events.entityDie.subscribe(data=>{
+mc.world.afterEvents.entityDie.subscribe(data=>{
     const status = getScore("test","status");
     if(status!=1)return;
     const {damageSource,deadEntity:hurter} = data;
@@ -16,7 +16,7 @@ mc.world.events.entityDie.subscribe(data=>{
     mc.world.setDynamicProperty("killlog",log);
 },{entityTypes:["minecraft:player"]});
 
-mc.system.events.scriptEventReceive.subscribe(data=>{
+mc.system.afterEvents.scriptEventReceive.subscribe(data=>{
     const {id} = data;
     switch(id){
         case "altivelis:showLog":

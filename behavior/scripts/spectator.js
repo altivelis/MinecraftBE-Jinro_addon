@@ -2,7 +2,7 @@ import * as mc from "@minecraft/server";
 import * as ui from "@minecraft/server-ui";
 
 //霊界会話
-mc.world.events.beforeChat.subscribe(data=>{
+mc.world.beforeEvents.chatSend.subscribe(data=>{
     const {message,sender} = data;
     if(!sender.hasTag("death") && !sender.hasTag("spec"))return;
     if(message.startsWith(".")){

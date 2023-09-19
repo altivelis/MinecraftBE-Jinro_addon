@@ -11,7 +11,7 @@ export function getGlass(block){
     if(!blockId || !blockId.match(/glass/)){
         return null;
     }
-    let color = block.permutation.getProperty("color");
+    let color = block.permutation.getState("color");
     return {blockId:blockId,color:color}
 }
 /**
