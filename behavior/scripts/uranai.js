@@ -23,6 +23,7 @@ export function uranaiForm(user){
         form.button(`${player.nameTag}`);
     })
     form.show(user).then(async res=>{
+        if(res.canceled)return;
         let index = res.selection;
         let target = playerList[index];
         let tagList = target.getTags();
@@ -42,8 +43,8 @@ export function uranaiForm(user){
         let result_form = new ui.MessageFormData()
             .title("§l§d占い結果")
             .body(text)
-            .button1("ヘルプ:占い結果について")
-            .button2("OK");
+            .button2("ヘルプ:占い結果について")
+            .button1("OK");
         runPlayer(user,`replaceitem entity @s slot.weapon.mainhand 0 air 1 0`);
         while(1){
             const res2 = await result_form.show(user);

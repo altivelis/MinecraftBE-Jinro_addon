@@ -10,24 +10,6 @@ import "./killlog";
 import { f_help_uranai } from "./roleBook";
 import "./spectator"
 
-mc.world.afterEvents.worldInitialize.subscribe((data)=>{
-    let def = new mc.DynamicPropertiesDefinition();
-    def.defineBoolean("wolf_knows_each_other");
-    def.defineNumber("arrow_cooldown");
-    def.defineNumber("arrow_handi_cooldown");
-    def.defineNumber("arrow_hit_cooldown");
-    def.defineNumber("coin_cooldown");
-    def.defineNumber("num_of_coin");
-    def.defineNumber("wolf_coin");
-    def.defineBoolean("naturalregeneration");
-    def.defineBoolean("drowningdamage");
-    def.defineBoolean("falldamage");
-    def.defineString("killlog",1000);
-    data.propertyRegistry.registerWorldDynamicProperties(def);
-    runCommand(`scoreboard objectives add system dummy`);
-    setGameOptionFromProperties();
-})
-
 export function initDynamicProperties(){
     mc.world.setDynamicProperty("wolf_knows_each_other",true);
     mc.world.setDynamicProperty("arrow_cooldown",1);
@@ -103,33 +85,43 @@ mc.world.afterEvents.itemUse.subscribe(data=>{
     }
 })
 
-mc.world.afterEvents.projectileHit.subscribe(data=>{
-    const blockHit=data.getBlockHit(), entityHit=data.getEntityHit();
-    if(blockHit){
-        if(data.projectile.typeId=="minecraft:arrow"){
-            let block = blockHit.block;
-            if(getGlass(block)){
-                breakGlass(block);
-                data.projectile.kill();
-            }
+mc.world.afterEvents.projectileHitBlock.subscribe(data=>{
+    const {dimension, location, projectile} = data;
+    const blockHit = data.getBlockHit();
+    if(projectile.typeId=="minecraft:arrow"){
+        let block=blockHit.block;
+        if(getGlass(block)){
+            breakGlass(block);
+            projectile.kill();
         }
-        
-    }else if(entityHit){
-        let hurter = entityHit.entity;
-        let source = data.source;
-        if(hurter.typeId=="minecraft:player" && source.typeId=="minecraft:player" && data.projectile.typeId=="minecraft:arrow"){
-            source.playSound("random.orb",{location:source.location,pitch:1,volume:1});
-            if(hurter.getComponent(mc.EntityHealthComponent.componentId).current<=0)source.addTag("hit");
+    }
+    else if(projectile.typeId=="altivelis:death_potion"){
+        projectile.kill();
+        let block;
+        switch(blockHit.face){
+            case "Down": block=blockHit.block.below(); break;
+            case "East": block=blockHit.block.east(); break;
+            case "North": block=blockHit.block.north(); break;
+            case "South": block=blockHit.block.south(); break;
+            case "Up": block=blockHit.block.above(); break;
+            case "West": block=blockHit.block.west(); break;
         }
+        dimension.createExplosion(block.location,3,{allowUnderwater:false,breaksBlocks:false,causesFire:false,source:projectile});
     }
 })
 
-mc.world.afterEvents.projectileHit.subscribe(data=>{
-    const {dimension,location,projectile} = data;
-    if(projectile.typeId!="altivelis:death_potion")return;
-    projectile.kill();
-    location.y+=0.5;
-    dimension.createExplosion(location,3,{allowUnderwater:false,breaksBlocks:false,causesFire:false,source:projectile});
+mc.world.afterEvents.projectileHitEntity.subscribe(data=>{
+    const {dimension, location, projectile, source} = data;
+    const entityHit = data.getEntityHit();
+    let hurter = entityHit.entity;
+    if(hurter.typeId=="minecraft:player" && source.typeId=="minecraft:player" && projectile.typeId=="minecraft:arrow"){
+        source.playSound("random.orb",{location:source.location,pitch:1,volume:1});
+        if(hurter.getComponent(mc.EntityHealthComponent.componentId).current<=0)source.addTag("hit");
+    }
+    else if(projectile.typeId=="altivelis:death_potion"){
+        projectile.kill();
+        dimension.createExplosion(location,3,{allowUnderwater:false,breaksBlocks:false,causesFire:false,source:projectile});
+    }
 })
 
 mc.system.runInterval(()=>{

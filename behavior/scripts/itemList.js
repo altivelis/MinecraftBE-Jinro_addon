@@ -31,7 +31,7 @@ export const itemList = [
         name:"§d煙幕"
     },
     {
-        role:1,item:new mc.ItemStack(mc.MinecraftItemTypes.filledMap),keep:true,lock:false,cost:4,texture:"textures/items/map_filled",
+        role:1,item:new mc.ItemStack("minecraft:filled_map"),keep:true,lock:false,cost:4,texture:"textures/items/map_filled",
         lore:[
             "人狼限定アイテム",
             "生存者全員の居場所がわかる地図。",
