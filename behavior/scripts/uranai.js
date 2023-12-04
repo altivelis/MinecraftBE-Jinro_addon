@@ -30,7 +30,6 @@ export function uranaiForm(user){
         let text = "";
         if(tagList.includes("death")){
             text = `§b${target.nameTag}§dは§c死亡している§5ため、占うことができません`
-            user.sendMessage(`§d[占い]§b${target.nameTag}§dは§c死亡している§5ため、占うことができません`);
         }else{
             let role = getScore(target,"role");
             if(role==1){
@@ -45,7 +44,7 @@ export function uranaiForm(user){
             .body(text)
             .button2("ヘルプ:占い結果について")
             .button1("OK");
-        runPlayer(user,`replaceitem entity @s slot.weapon.mainhand 0 air 1 0`);
+        user.getComponent(mc.EntityInventoryComponent.componentId).container.setItem(user.selectedSlot);
         while(1){
             const res2 = await result_form.show(user);
             if(res2.canceled || res2.selection==0)return;

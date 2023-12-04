@@ -55,11 +55,11 @@ mc.world.afterEvents.entityHurt.subscribe(data=>{
             }
             n++;
         }
-        let player = mc.world.getPlayers({name:hurter.nameTag,location:hurter.location});
+        let player = mc.world.getPlayers({name:hurter.nameTag});
         player[0].onScreenDisplay.setTitle("§4あなたは死亡しました",{
-            fadeInSeconds:0,
-            fadeOutSeconds:1,
-            staySeconds:3,
+            fadeInDuration:0,
+            fadeOutDuration:20,
+            stayDuration:60,
             subtitle:"§cミュートしてください"
         });
         hurter.sendMessage("§7霊界チャットが有効になりました。観戦者同士で会話ができます。\n「.tp」でプレイヤーへテレポート、「!」を先頭につけると全体にチャットできます。");
@@ -213,6 +213,32 @@ mc.world.afterEvents.playerSpawn.subscribe(data=>{
     const {initialSpawn,player} = data;
     if(initialSpawn && getScore("test","status")==1){
         player.addTag("spec");
+    }
+})
+
+mc.world.afterEvents.playerInteractWithEntity.subscribe(async data=>{
+    const {itemStack, player, target} = data;
+    if(target.typeId == "altivelis:dead_body"){
+        if(!target.hasTag("found")){
+            mc.world.sendMessage(`§c${target.nameTag}§3の遺体を§b${player.nameTag}§3が発見した`);
+            target.addTag("found");
+        }
+        if(itemStack?.typeId == "altivelis:ohuda"){
+            player.getComponent(mc.EntityInventoryComponent.componentId).container.setItem(player.selectedSlot);
+            let medium_form = new ui.MessageFormData()
+                .title("§l§3霊媒結果")
+                .button2("ヘルプ:霊媒結果について")
+                .button1("OK")
+                .body(target.hasTag("wolf")?`§b${target.nameTag}§dは§4人狼です`:
+                    target.hasTag("human")?`§b${target.nameTag}§dは§a人狼ではありません`:
+                    "エラー");
+            while(1){
+                const res = await medium_form.show(player);
+                if(res.canceled || res.selection==0) return;
+                const res2 = await f_help_uranai.show(player);
+                if(res2.canceled) return;
+            }
+        }
     }
 })
 
