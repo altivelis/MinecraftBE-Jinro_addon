@@ -224,7 +224,7 @@ mc.world.afterEvents.playerInteractWithEntity.subscribe(async data=>{
             target.addTag("found");
         }
         if(itemStack?.typeId == "altivelis:ohuda"){
-            player.getComponent(mc.EntityInventoryComponent.componentId).container.setItem(player.selectedSlot);
+            player.getComponent(mc.EntityInventoryComponent.componentId).container.setItem(player.selectedSlotIndex);
             let medium_form = new ui.MessageFormData()
                 .title("§l§3霊媒結果")
                 .button2("ヘルプ:霊媒結果について")

@@ -44,7 +44,7 @@ export function uranaiForm(user){
             .body(text)
             .button2("ヘルプ:占い結果について")
             .button1("OK");
-        user.getComponent(mc.EntityInventoryComponent.componentId).container.setItem(user.selectedSlot);
+        user.getComponent(mc.EntityInventoryComponent.componentId).container.setItem(user.selectedSlotIndex);
         while(1){
             const res2 = await result_form.show(user);
             if(res2.canceled || res2.selection==0)return;
