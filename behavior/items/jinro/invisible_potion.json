@@ -1,40 +1,32 @@
 {
-    "format_version": "1.19.50",
+    "format_version": "1.21.10",
     "minecraft:item": {
       "description": {
         "identifier": "altivelis:invisible_potion",
-        "category":"Items"
+        "menu_category":{
+          "category":"Items"
+        }
       },
       "components": {
         "minecraft:display_name":{
           "value":"§d透明化のポーション\n§7不可視(0:20)"
         },
-        "minecraft:icon":{
-          "texture":"invisible_potion"
-        },
-        "minecraft:foil":true,
+        "minecraft:icon":"invisible_potion",
+        "minecraft:glint":true,
         "minecraft:use_animation":"drink",
         "minecraft:max_stack_size":1,
+        "minecraft:use_modifiers":{
+          "movement_modifier":0.3,
+          "use_duration":1.6
+        },
         "minecraft:food":{
           "nutrition":0,
           "can_always_eat":true,
-          "saturation_modifier":0.0,
-          "on_consume":{
-            "event":"drink",
-            "target":"self"
-          }
+          "saturation_modifier":0.0
         },
-        "minecraft:use_duration":1.6
-      },
-      "events":{
-        "drink":{
-          "add_mob_effect":{
-            "effect":"invisibility",
-            "amplifier":0,
-            "duration":20,
-            "target":"holder"
-          }
-        }
+        "minecraft:custom_components":[
+          "altivelis:invisible"
+        ]
       }
     }
   }

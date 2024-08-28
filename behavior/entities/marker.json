@@ -125,7 +125,7 @@
         "events":{
             "minecraft:entity_spawned":{},
             "kill":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "kill @s"
                     ],
@@ -133,7 +133,7 @@
                 }
             },
             "glass":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add glass"
                     ],
@@ -141,7 +141,7 @@
                 }
             },
             "white":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add white"
                     ],
@@ -149,7 +149,7 @@
                 }
             },
             "red":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add red"
                     ],
@@ -157,7 +157,7 @@
                 }
             },
             "purple":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add purple"
                     ],
@@ -165,7 +165,7 @@
                 }
             },
             "blue":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add blue"
                     ],
@@ -173,7 +173,7 @@
                 }
             },
             "yellow":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add yellow"
                     ],
@@ -181,7 +181,7 @@
                 }
             },
             "smoke":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add smoke"
                     ],

@@ -9,6 +9,7 @@ import { uranaiForm } from "./uranai";
 import "./killlog";
 import { f_help_uranai } from "./roleBook";
 import "./spectator"
+import "./item"
 
 export function initDynamicProperties(){
     mc.world.setDynamicProperty("wolf_knows_each_other",true);
@@ -74,8 +75,9 @@ mc.world.afterEvents.itemUse.subscribe(data=>{
         case "altivelis:crystal": uranaiForm(source);
             break;
         case "altivelis:magicbook":
-            runPlayer(source,`tellraw @s {"rawtext":[{"text":"§2人狼の1人は§c "},{"selector":"@r[scores={role=1},tag=!death]"},{"text":"§2です"}]}`);
-            runPlayer(source,`replaceitem entity @s slot.weapon.mainhand 0 air 1 0`);
+            let wolfList = mc.world.getPlayers({scoreOptions:[{objective:"role",maxScore:1,minScore:1}],excludeTags:["death"]});
+            source.sendMessage(`§2人狼の1人は§c ${wolfList[Math.floor(Math.random()*wolfList.length)].nameTag} §2です`);
+            source.getComponent(mc.EntityEquippableComponent.componentId).setEquipment(mc.EquipmentSlot.Mainhand);
             break;
         case "altivelis:console": if(source.isOp()) f_systemConsole(source);
             else source.sendMessage("§4このアイテムを使うには管理者権限が必要です");
@@ -106,7 +108,7 @@ mc.world.afterEvents.projectileHitBlock.subscribe(data=>{
             case "Up": block=blockHit.block.above(); break;
             case "West": block=blockHit.block.west(); break;
         }
-        dimension.createExplosion(block.location,3,{allowUnderwater:false,breaksBlocks:false,causesFire:false,source:projectile});
+        dimension.createExplosion(block.location,3,{allowUnderwater:false,breaksBlocks:false,causesFire:false,source:data.source});
     }
 })
 

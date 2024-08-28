@@ -44,7 +44,7 @@
     },
     "events":{
       "hit":{
-        "run_command":{
+        "queue_command":{
           "command":[
             "summon altivelis:marker ~ ~ ~ ~ ~ smoke",
             "particle minecraft:egg_destroy_emitter ~~~",

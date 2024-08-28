@@ -113,7 +113,7 @@
           },
           {
             "filters": {"test": "is_family", "subject": "other", "value": "player"},
-            "run_command":{
+            "queue_command":{
               "command":[
                 "tag @s add shot"
               ],
@@ -123,7 +123,7 @@
         ]
       },
       "hit":{
-        "run_command":{
+        "queue_command":{
           "command":[
             "tag @s add hit"
           ],

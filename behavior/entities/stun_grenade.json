@@ -44,7 +44,7 @@
       },
       "events":{
         "hit":{
-          "run_command":{
+          "queue_command":{
             "command":[
               "effect @e[r=3] blindness 5 0 false",
               "effect @e[r=3] slowness 5 5 false",

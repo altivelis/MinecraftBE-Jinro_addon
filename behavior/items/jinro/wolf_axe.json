@@ -1,18 +1,17 @@
 {
-    "format_version": "1.19.50",
+    "format_version": "1.20.20",
     "minecraft:item": {
       "description": {
         "identifier": "altivelis:wolf_axe",
-        "category":"Items"
+        "menu_category":{
+          "category":"Items"
+        }
       },
       "components": {
         "minecraft:display_name":{
           "value":"§d人狼の斧"
         },
-        "minecraft:icon":{
-          "texture":"stone_axe",
-          "frame":1
-        },
+        "minecraft:icon":"stone_axe",
         "minecraft:foil":true,
         "minecraft:max_stack_size":1,
         "minecraft:hand_equipped":true,

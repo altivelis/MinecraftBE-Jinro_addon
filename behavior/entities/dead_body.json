@@ -55,7 +55,7 @@
                 }
             },
             "wolf":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add wolf"
                     ],
@@ -63,7 +63,7 @@
                 }
             },
             "human":{
-                "run_command":{
+                "queue_command":{
                     "command":[
                         "tag @s add human"
                     ],
