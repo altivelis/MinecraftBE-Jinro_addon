@@ -1,5 +1,5 @@
 {
-    "format_version": "1.20.20",
+    "format_version": "1.21.10",
     "minecraft:item": {
       "description": {
         "identifier": "altivelis:wolf_axe",
@@ -19,26 +19,9 @@
             "max_durability":0
         },
         "minecraft:damage":20,
-        "minecraft:weapon":{
-            "on_hurt_entity":{
-                "event":"hit"
-            }
-        }
-      },
-      "events":{
-        "hit":{
-            "run_command":{
-                "command":[
-                    "playsound random.totem @a ~~~ 2 1 0"
-                ],
-                "target":"holder"
-            },
-            "damage":{
-                "amount":1,
-                "type":"durability",
-                "target":"self"
-            }
-        }
+        "minecraft:custom_components":[
+          "altivelis:wolf_axe"
+        ]
       }
     }
   }

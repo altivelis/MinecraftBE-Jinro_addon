@@ -39,8 +39,8 @@ async function form_check_role(player){
         let form = new ui.MessageFormData()
             .title("待機中")
             .body("まだゲームは始まっていません。\nホストがゲームを開始するまでお待ちください。")
-            .button1("役職の説明")
-            .button2("戻る");
+            .button2("役職の説明")
+            .button1("戻る");
         let result = await form.show(player);
         if(result.canceled) return;
         if(result.selection == 1){

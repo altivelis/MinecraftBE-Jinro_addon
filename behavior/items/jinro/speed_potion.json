@@ -1,5 +1,5 @@
 {
-    "format_version": "1.20.30",
+    "format_version": "1.21.10",
     "minecraft:item": {
       "description": {
         "identifier": "altivelis:speed_potion",
@@ -22,23 +22,11 @@
         "minecraft:food":{
           "nutrition":0,
           "can_always_eat":true,
-          "saturation_modifier":0.0,
-          "on_consume":{
-            "event":"drink",
-            "target":"self"
-          }
+          "saturation_modifier":0.0
         },
-        "minecraft:use_duration":1.6
-      },
-      "events":{
-        "drink":{
-          "add_mob_effect":{
-            "effect":"speed",
-            "amplifier":2,
-            "duration":30,
-            "target":"holder"
-          }
-        }
+        "minecraft:custom_components":[
+          "altivelis:speed"
+        ]
       }
     }
   }
